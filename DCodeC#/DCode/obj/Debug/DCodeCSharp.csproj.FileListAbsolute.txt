@@ -1,0 +1,4 @@
+C:\Users\Davi\Documents\GitHub\DCode\DCodeC#\DCode\obj\Debug\DCode.dll
+C:\Users\Davi\Documents\GitHub\DCode\DCodeC#\DCode\obj\Debug\DCode.pdb
+C:\Users\Davi\Documents\GitHub\DCode\DCodeC#\DCode\bin\Debug\DCode.dll
+C:\Users\Davi\Documents\GitHub\DCode\DCodeC#\DCode\bin\Debug\DCode.pdb

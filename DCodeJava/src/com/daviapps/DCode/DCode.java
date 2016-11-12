@@ -16,17 +16,6 @@ public class DCode {
         this.open = open; this.space = space; this.close = close;
     }
 
-    public static String criptografar(String in, int code){
-        String out = "";
-        char [] _in = in.toCharArray();
-
-        for(int i = 0; i < _in.length; i++){
-                out = out + (char) ((int) _in[i] + 1);
-        }
-
-        return out;
-    }
-
     public String [] unCode(String in){
         String [] out = new String[lenght(in)];
         char [] _in = in.toCharArray();
