@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +11,6 @@ public class DCode {
         open = '<'; space = ';'; close = '>';
     }
 
-
     public DCode(char open, char space, char close) {
         this.open = open; this.space = space; this.close = close;
     }
@@ -22,7 +21,6 @@ public class DCode {
         String word = "";
         int opend = 0;
 
-
         int x = 0;
         for (int i = 0; i < _in.Length; i++) {
 
@@ -30,22 +28,22 @@ public class DCode {
                 opend++;
                 if (opend > 1) word = word + _in [i];
             } else
-                if (_in [i] == space) {
-                    if (opend > 1) {
-                        word = word + _in [i];
-                        continue;
-                    }
-                    outp [x] = word;
-                    x++;
-                    word = "";
-                } else
-                    if (_in [i] == close) {
-                        if (opend > 1) word = word + _in [i];
-                        opend--;
-                    } else {
-                        if (_in [i] == '\r' || opend < 1) continue;
-                        word = word + _in [i];
-                    }
+            if (_in [i] == space) {
+                if (opend > 1) {
+                    word = word + _in [i];
+                    continue;
+                }
+                outp [x] = word;
+                x++;
+                word = "";
+            } else
+            if (_in [i] == close) {
+                if (opend > 1) word = word + _in [i];
+                opend--;
+            } else {
+                if (_in [i] == '\r' || opend < 1) continue;
+                word = word + _in [i];
+            }
         }
 
         return outp;
@@ -98,17 +96,17 @@ public class DCode {
             if (_in [i] == open) {
                 opend++;
             } else
-                if (_in [i] == space) {
-                    if (opend > 1) {
-                        continue;
-                    }
-                    outp++;
-                } else
-                    if (_in [i] == close) {
-                        opend--;
-                    } else {
-                        if (_in [i] == '\r') continue;
-                    }
+            if (_in [i] == space) {
+                if (opend > 1) {
+                    continue;
+                }
+                outp++;
+            } else
+            if (_in [i] == close) {
+                opend--;
+            } else {
+                if (_in [i] == '\r') continue;
+            }
         }
 
         return outp;
@@ -133,11 +131,11 @@ public class DCode {
                 opend++;
                 if (opend > outp) outp = opend;
             } else
-                if (_in [i] == dcode.close) {
-                    opend--;
-                } else {
+            if (_in [i] == dcode.close) {
+                opend--;
+            } else {
 
-                }
+            }
         }
 
         return outp;

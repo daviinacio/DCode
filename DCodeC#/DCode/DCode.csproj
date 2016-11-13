@@ -43,6 +43,8 @@
     <Compile Include="Datas.cs" />
     <Compile Include="DCodeFile.cs" />
     <Compile Include="Preferences\DCodePreferences.cs" />
+    <Compile Include="Preferences\DCodePrefItem.cs" />
+    <Compile Include="Preferences\DCodePrefItemList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

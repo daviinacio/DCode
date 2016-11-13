@@ -11,7 +11,6 @@ public class DCode {
         open = '<'; space = ';'; close = '>';
     }
 
-
     public DCode(char open, char space, char close){
         this.open = open; this.space = space; this.close = close;
     }
@@ -41,8 +40,7 @@ public class DCode {
             if(_in[i] == close){
                 if(opend > 1) word = word + _in[i];
                 opend--;
-            }
-            else{
+            } else{
                 if(_in[i] == '\r' || opend < 1) continue;
                 word = word + _in[i];
             }
@@ -106,8 +104,7 @@ public class DCode {
             } else
             if(_in[i] == close){
                 opend--;
-            }
-            else{
+            } else {
                 if(_in[i] == '\r') continue;
             }
         }
@@ -136,8 +133,7 @@ public class DCode {
             } else
             if(_in[i] == dcode.close){
                 opend--;
-            }
-            else{
+            } else {
 
             }
         }

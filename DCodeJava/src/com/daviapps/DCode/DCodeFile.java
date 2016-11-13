@@ -63,6 +63,7 @@ public class DCodeFile {
     
     public void createBaseFile(){
         if(this.getStatusKey() == EMPTY){
+            this.statusKey = ALRIGHT;
             this.setTitle(file.getName());
             this.setEncodeType("DCode");
             this.setText("");
@@ -213,6 +214,10 @@ public class DCodeFile {
     }
     
     // Internal methods
+    
+    public String getFileName(){
+        return getFileName(file);
+    }
     
     public boolean isDCodeExtention(){
         return isDCodeExtention(file);
