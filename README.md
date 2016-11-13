@@ -11,8 +11,8 @@ Instalation
 Documentation
 -------------
 
-    * Documentação em Português (PT-BR): /Documentation/PT-BR/
-    * <a href="Documentation/English/"> Documentation in English </a>
+    * Documentação em Português (PT-BR): https://github.com/daviinacio/DCode/Documentation/PT-BR/
+    * Documentation in English: https://github.com/daviinacio/DCode/Documentation/English/
 
 Compatibility
 -------------

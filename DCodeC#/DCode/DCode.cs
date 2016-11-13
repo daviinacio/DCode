@@ -49,7 +49,7 @@ public class DCode {
         return outp;
     }
 
-    public String [] [] unCode(DCode dcode1, String inp) {
+    public String [][] unCode(DCode dcode1, String inp) {
         String [] _out = unCode(inp);
         String [] [] outp = new String [_out.Length] [];
 
@@ -60,9 +60,9 @@ public class DCode {
         return outp;
     }
 
-    public String [] [] [] unCode(DCode dcode1, DCode dcode2, String inp) {
-        String [] [] _out = unCode(dcode1, inp);
-        String [] [] [] outp = new String [_out.Length] [][];
+    public String [][][] unCode(DCode dcode1, DCode dcode2, String inp) {
+        String [][] _out = unCode(dcode1, inp);
+        String [][][] outp = new String [_out.Length][][];
 
         for (int i = 0; i < _out.Length; i++) {
             outp [i] = new String [_out [i].Length] [];
