@@ -11,8 +11,8 @@ Instalation
 Documentation
 -------------
 
-    * Documentação em Português (PT-BR): https://github.com/daviinacio/DCode/Documentation/PT-BR/
-    * Documentation in English: https://github.com/daviinacio/DCode/Documentation/English/
+    * Documentação em Português (PT-BR): https://github.com/daviinacio/DCode/blob/master/Documentation/PT-BR/
+    * Documentation in English: https://github.com/daviinacio/DCode/blob/master/Documentation/English/
 
 Compatibility
 -------------
