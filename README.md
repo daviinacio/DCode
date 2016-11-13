@@ -6,13 +6,15 @@ $DCode is a library, with some classes, to be used to "pack" and "unpack" data i
 Instalation
 -----------
 
-    Download the library, DCode.dll (Windows .NET) or DCode.jar (Java), include on your project, and uses the classes and functions
+     - Download the library, DCode.dll (Windows .NET) or DCode.jar (Java)
+     - Include on your project
+     - Use the classes and functions
     
 Documentation
 -------------
 
-    * Documentação em Português (PT-BR): https://github.com/daviinacio/DCode/blob/master/Documentation/PT-BR/
-    * Documentation in English: https://github.com/daviinacio/DCode/blob/master/Documentation/English/
+    * [Documentação em Português (PT-BR)](Docs/PT-BR/README.md)
+    * [Documentation in English](Docs/English/README.md)
 
 Compatibility
 -------------
@@ -26,7 +28,7 @@ Compatibility
         - JVM: Windows, Mac OS, Linux.
         
         - Android:
-            MinSdk: API 10 / v2.3.6 (gingerbread)
+            MinSdk: API 10 / v2.3.6 (Gingerbread)
             MaxSdk: The last sdk
 
 Contribute
