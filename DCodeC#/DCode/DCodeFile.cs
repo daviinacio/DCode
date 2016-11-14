@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
+/**
+ * @author Davi
+ */
+
 public class DCodeFile {
     private DCode dcode = new DCode('{', '_', '}');
     

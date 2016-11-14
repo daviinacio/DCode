@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/**
+ * @author Davi
+ */
+
 public class DCodePrefItem {
     protected DCode dcode = new DCode();
     protected String key, value;

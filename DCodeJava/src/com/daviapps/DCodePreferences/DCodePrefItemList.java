@@ -12,17 +12,41 @@ public class DCodePrefItemList {
     protected List<DCodePrefItem> list;
     protected DCode dcode;
     
+    // Contructors
+    
     public DCodePrefItemList(DCode dcode, String items){
         this(dcode, dcode.unCode(items));
     }
     
     public DCodePrefItemList(DCode dcode, String [] items){
-        this(dcode, toDCodePrefItemsArray(items));
+        this(dcode, toItemArray(items));
     }
     
+    // Main contructor
     public DCodePrefItemList(DCode dcode, DCodePrefItem [] items){
-        list = toDCodePrefsItemList(items);
+        list = toList(items);
         this.dcode = dcode;
+    }
+    
+    // Methods
+    
+    public void addItem(String key, String value){
+        list.add(new DCodePrefItem(key, value));
+    }
+    
+    public DCodePrefItem getItem(String key){
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getKey().equals(key)){
+                return list.get(i);
+            }
+        }
+        return null;
+    }
+    
+    // The setItem method is on DCodePreferences, becouse uses the getItem();
+    
+    public boolean contains(String key){
+        return (getItem(key) != null);
     }
     
     // Static methods
@@ -35,7 +59,11 @@ public class DCodePrefItemList {
         return _item;
     }
     
-    public static DCodePrefItem[] toDCodePrefItemsArray(String [] items){
+    public static String [] toStringArray(List<DCodePrefItem> items){
+        return toStringArray(toItemArray(items));
+    }
+    
+    public static DCodePrefItem[] toItemArray(String [] items){
         DCodePrefItem [] _items = new DCodePrefItem[items.length];
         for(int i = 0; i < _items.length; i++){
             _items[i] = new DCodePrefItem(items[i]);
@@ -43,7 +71,7 @@ public class DCodePrefItemList {
         return _items;
     }
     
-    public static List<DCodePrefItem> toDCodePrefsItemList(DCodePrefItem [] items){
+    public static List<DCodePrefItem> toList(DCodePrefItem [] items){
         List<DCodePrefItem> list = new ArrayList<>();
         for(int i = 0; i < items.length; i++){
             list.add(items[i]);
@@ -51,7 +79,7 @@ public class DCodePrefItemList {
         return list;
     }
     
-    public static DCodePrefItem [] toDCodePrefsItemsArray(List<DCodePrefItem> items){
+    public static DCodePrefItem [] toItemArray(List<DCodePrefItem> items){
         DCodePrefItem [] out = new DCodePrefItem[items.size()];
         for(int i = 0; i < items.size(); i++){
             out[i] = items.get(i);
@@ -61,34 +89,6 @@ public class DCodePrefItemList {
     
     // Getters and Setters
     
-    /*public boolean setItem(String key, String value){
-        if(this.getItem(key) != null){
-            return true;
-        }
-        
-        return false;
-    }*/
-    
-    public DCodePrefItem getItem(String key){
-        //DCodePrefItem [] listItems = new DCodePrefItem[2];
-        /*DCodePrefItem [] listItems = {
-            new DCodePrefItem("nome", "Ddas"),
-            new DCodePrefItem("idade", "jd")
-        };*/
-        for(int i = 0; i < list.size(); i++){
-            if(list.get(i).getKey().equals(key)){
-                return list.get(i);
-            }
-        }
-        
-        return null;
-        //return getItem(key, null);
-    }
-    
-    /*public DCodePrefItem getItem(String key, String ifNotFound){
-        return null;
-    }*/
-    
     public List<DCodePrefItem> getList(){
         return list;
     }
@@ -97,7 +97,7 @@ public class DCodePrefItemList {
 
     @Override
     public String toString() {
-        return dcode.enCodeI(toStringArray(toDCodePrefsItemsArray(list)));
+        return dcode.enCodeI(toStringArray(list));
     }
     
 }

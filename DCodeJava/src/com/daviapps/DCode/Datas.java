@@ -1,9 +1,6 @@
 package com.daviapps.DCode;
 
-import android.text.format.Time;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * @author Davi

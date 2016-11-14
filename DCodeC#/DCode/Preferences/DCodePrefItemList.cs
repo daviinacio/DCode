@@ -4,36 +4,73 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/**
+ * @author Davi
+ */
+
 public class DCodePrefItemList {
     protected List<DCodePrefItem> list;
     protected DCode dcode;
+
+    // Constructors
     
     public DCodePrefItemList(DCode dcode, String items){
-        list = toDCodePrefsItemList(toDCodePrefItemsArray(dcode.unCode(items)));
-        this.dcode = dcode;
+        This(dcode, ToItemArray(dcode.unCode(items)));
     }
     
     public DCodePrefItemList(DCode dcode, String [] items){
-        list = toDCodePrefsItemList(toDCodePrefItemsArray(items));
-        this.dcode = dcode;
+        This(dcode, ToItemArray(items));
     }
     
     public DCodePrefItemList(DCode dcode, DCodePrefItem [] items){
-        list = toDCodePrefsItemList(items);
+        This(dcode, items);
+    }
+
+    // Main constructor
+    private void This(DCode dcode, DCodePrefItem [] items) {
+        list = ToList(items);
         this.dcode = dcode;
     }
+
+    // Methods
+
+    public void addItem(String key, String value) {
+        list.Add(new DCodePrefItem(key, value));
+    }
+
+    public DCodePrefItem getItem(String key) {
+        DCodePrefItem [] items = list.ToArray();
+        for (int i = 0; i < items.Length; i++) {
+            if (items [i].getKey().Equals(key)) {
+                return items [i];
+            }
+        }
+
+        return null;
+    }
+
+    // The setItem method is on DCodePreferences, becouse uses the getItem();
+
+    public bool contains(String key) {
+        return (getItem(key) != null);
+    }
+
     
     // Static methods
     
-    public static String [] toStringArray(DCodePrefItem[] item){
+    public static String [] ToStringArray(DCodePrefItem[] item){
         String [] _item = new String[item.Length];
         for(int i = 0; i < _item.Length; i++){
             _item[i] = item[i].ToString();
         }
         return _item;
     }
+
+    public static String [] ToStringArray(List<DCodePrefItem> items) {
+        return ToStringArray(ToItemArray(items));
+    }
     
-    public static DCodePrefItem[] toDCodePrefItemsArray(String [] items){
+    public static DCodePrefItem[] ToItemArray(String [] items){
         DCodePrefItem [] _items = new DCodePrefItem[items.Length];
         for(int i = 0; i < _items.Length; i++){
             _items[i] = new DCodePrefItem(items[i]);
@@ -41,7 +78,7 @@ public class DCodePrefItemList {
         return _items;
     }
     
-    public static List<DCodePrefItem> toDCodePrefsItemList(DCodePrefItem [] items){
+    public static List<DCodePrefItem> ToList(DCodePrefItem [] items){
         List<DCodePrefItem> list = new List<DCodePrefItem>();
         for(int i = 0; i < items.Length; i++){
             list.Add(items[i]);
@@ -49,27 +86,11 @@ public class DCodePrefItemList {
         return list;
     }
     
-    public static DCodePrefItem [] toDCodePrefsItemsArray(List<DCodePrefItem> items){
+    public static DCodePrefItem [] ToItemArray(List<DCodePrefItem> items){
         return items.ToArray();
-        /*DCodePrefItem [] outp = new DCodePrefItem[items.Size()];
-        for(int i = 0; i < items.size(); i++){
-            outp[i] = items.get(i);
-        }
-        return outp;*/
     }
     
     // Getters and Setters
-    
-    public DCodePrefItem getItem(String key){
-        DCodePrefItem [] items = list.ToArray();
-        for(int i = 0; i < items.Length; i++){
-            if(items[i].getKey().Equals(key)){
-                return items [i];
-            }
-        }
-        
-        return null;
-    }
     
     public List<DCodePrefItem> getList(){
         return list;
@@ -79,6 +100,6 @@ public class DCodePrefItemList {
 
     override
     public String ToString() {
-        return dcode.enCodeI(toStringArray(toDCodePrefsItemsArray(list)));
+        return dcode.enCodeI(ToStringArray(list));
     }
 }

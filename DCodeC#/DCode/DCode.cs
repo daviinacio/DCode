@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/**
+ * @author Davi
+ */
+
 public class DCode {
     private char open, space, close;
 
