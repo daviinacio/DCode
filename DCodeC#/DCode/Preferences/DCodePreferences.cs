@@ -30,14 +30,14 @@ public class DCodePreferences {
             Console.WriteLine("Alright");
             list = new DCodePrefItemList(dcode, file.getText());
         } else
-            if (file.getStatusKey() == DCodeFile.EMPTY) {
-                Console.WriteLine("Empty");
-                file.createBaseFile();
-                Console.WriteLine("Base file created");
-            } else
-                if (file.getStatusKey() == DCodeFile.ERROR) {
-                    Console.WriteLine("Error");
-                }
+        if (file.getStatusKey() == DCodeFile.EMPTY) {
+            Console.WriteLine("Empty");
+            file.createBaseFile();
+            Console.WriteLine("Base file created");
+        } else
+        if (file.getStatusKey() == DCodeFile.ERROR) {
+            Console.WriteLine("Error");
+        }
     }
 
     // Loader methods
@@ -54,6 +54,14 @@ public class DCodePreferences {
             return true;
         }
         return false; // If this item exists
+    }
+
+    public bool Remove(String key) {
+        if (list.contains(key)) {
+            list.removeItem(key);
+            return true;
+        }
+        return false;
     }
 
     public bool Set(String key, String value) {
@@ -78,6 +86,10 @@ public class DCodePreferences {
         return Add(key, value + "");
     }
 
+    public bool Add(String key, double value) { // AddDouble
+        return Add(key, value + "");
+    }
+
     public bool Add(String key, bool value) { // AddBoolean
         return Add(key, value + "");
     }
@@ -88,6 +100,10 @@ public class DCodePreferences {
 
     // Setters
     public bool Set(String key, int value) { // SetInteger
+        return Set(key, value + "");
+    }
+
+    public bool Set(String key, double value) { // SetDouble
         return Set(key, value + "");
     }
 
@@ -104,7 +120,7 @@ public class DCodePreferences {
         return Get(key, null);
     }
 
-    public int GetInt(String key, int ifNotFound) {
+    public int GetInt(String key, int ifNotFound) { // GetInteger
         try { return int.Parse(Get(key)); } 
         catch (FormatException) {
             Console.WriteLine("Key: " + key + " is not a Integer");
@@ -112,11 +128,22 @@ public class DCodePreferences {
         return ifNotFound;
     }
 
-    public int GetInt(String key) {
+    public int GetInt(String key) { // GetInteger
         return GetInt(key, 0);
     }
 
-    public bool GetBool(String key, bool ifNotFound){
+    public double GetDouble(String key, int ifNotFound) { // GetDouble
+        try { return Double.Parse(Get(key)); } catch (FormatException) {
+            Console.WriteLine("Key: " + key + " is not a Double");
+        }
+        return ifNotFound;
+    }
+
+    public double GetDouble(String key) { // GetDouble
+        return GetDouble(key, 0);
+    }
+
+    public bool GetBool(String key, bool ifNotFound) { // GetBoolean
         try { return bool.Parse(Get(key)); } 
         catch (FormatException) {
             Console.WriteLine("Key: " + key + " is not a Boolean");
@@ -124,7 +151,7 @@ public class DCodePreferences {
         return ifNotFound;
     }
 
-    public bool GetBool(String key) {
+    public bool GetBool(String key) { // GetBoolean
         return GetBool(key, false);
     }
 
@@ -140,9 +167,9 @@ public class DCodePreferences {
         return GetDatas(key, new Datas()); // Return a empty datas if not founded
     }
 
-    // Getters, Setters and Adders array
+    // Getters, Setters, Adders and Removers array
 
-    // Adders
+    // Adders Array
     public bool Add(String [] keys, String [] values) { // AddStringArray
         if (keys.Length == values.Length) {
             for (int i = 0; i < keys.Length; i++) {
@@ -154,6 +181,16 @@ public class DCodePreferences {
     }
 
     public bool Add(String [] keys, int [] values) { // AddIntegerArray
+        if (keys.Length == values.Length) {
+            for (int i = 0; i < keys.Length; i++) {
+                Add(keys [i], values [i]);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public bool Add(String [] keys, double [] values) { // AddDoubleArray
         if (keys.Length == values.Length) {
             for (int i = 0; i < keys.Length; i++) {
                 Add(keys [i], values [i]);
@@ -183,8 +220,8 @@ public class DCodePreferences {
         return false;
     }
 
-    // Setters
-    public bool Set(String [] keys, String [] values) { // SetStringArray
+    // Setters Array
+    public bool SetString(String [] keys, String [] values) { // SetStringArray
         if (keys.Length == values.Length) {
             for (int i = 0; i < keys.Length; i++) {
                 Set(keys [i], values [i]);
@@ -195,6 +232,16 @@ public class DCodePreferences {
     }
 
     public bool Set(String [] keys, int [] values) { // SetIntegerArray
+        if (keys.Length == values.Length) {
+            for (int i = 0; i < keys.Length; i++) {
+                Set(keys [i], values [i]);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public bool Set(String [] keys, double [] values) { // SetDoubleArray
         if (keys.Length == values.Length) {
             for (int i = 0; i < keys.Length; i++) {
                 Set(keys [i], values [i]);
@@ -222,5 +269,102 @@ public class DCodePreferences {
             return true;
         }
         return false;
+    }
+
+    // Getters array
+    
+    public String [] Get(String [] keys, String ifNotFound){ // GetStringArray
+        String [] outp = new String [keys.Length];
+        for (int i = 0; i < keys.Length; i++) {
+            if(list.contains(keys[i])){
+                outp[i] = Get(keys[i]);
+            } else {
+                outp[i] = ifNotFound;
+            }
+        }
+        return outp;
+    }
+    
+    public String [] Get(String [] keys){ // GetStringArray
+        return Get(keys, null);
+    }
+
+    public int [] GetInt(String [] keys, int ifNotFound) { // GetIntegerArray
+        int [] outp = new int [keys.Length];
+        for (int i = 0; i < keys.Length; i++) {
+            if(list.contains(keys[i])){
+                outp[i] = GetInt(keys[i]);
+            } else {
+                outp[i] = ifNotFound;
+            }
+        }
+        return outp;
+    }
+    
+     public int [] GetInt(String [] keys){ // GetIntegerArray
+         return GetInt(keys, 0);
+     }
+
+     public double [] GetDouble(String [] keys, double ifNotFound) { // GetDoubleArray
+        double [] outp = new double [keys.Length];
+        for (int i = 0; i < keys.Length; i++) {
+            if(list.contains(keys[i])){
+                outp[i] = GetInt(keys[i]);
+            } else {
+                outp[i] = ifNotFound;
+            }
+        }
+        return outp;
+    }
+    
+    public double [] GetDouble(String [] keys){ // GetDoubleArray
+        return GetDouble(keys, 0);
+    }
+    
+    public bool [] GetBool(String [] keys, bool ifNotFound){ // GetBooleanArray
+        bool [] outp = new bool [keys.Length];
+        for (int i = 0; i < keys.Length; i++) {
+            if(list.contains(keys[i])){
+                outp[i] = GetBool(keys[i]);
+            } else {
+                outp[i] = ifNotFound;
+            }
+        }
+        return outp;
+    }
+
+    public bool [] GetBool(String [] keys) { // GetBooleanArray
+        return GetBool(keys, false);
+    }
+
+    public Datas [] GetDatas(String [] keys, Datas ifNotFound) { // GetDatasArray
+        Datas [] outp = new Datas[keys.Length];
+        for (int i = 0; i < keys.Length; i++) {
+            if(list.contains(keys[i])){
+                outp[i] = GetDatas(keys[i]);
+            } else {
+                outp[i] = ifNotFound;
+            }
+        }
+        return outp;
+    }
+    
+    public Datas [] GetDatas(String [] keys){ // GetDatasArray
+        return GetDatas(keys, new Datas());
+    }
+    
+    // Removers array
+    
+    public void Remove(String [] keys){
+        for (int i = 0; i < keys.Length; i++) {
+            Remove(keys [i]);
+        }
+    }
+    
+    // Override methods
+
+    override
+    public String ToString() {
+        return list.ToString();
     }
 }

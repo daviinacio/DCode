@@ -1,7 +1,11 @@
 # DCode
 13/11/2016
 
-$DCode is a library, with some classes, to be used to "pack" and "unpack" data informations from a string
+$DCode
+------
+------
+
+  DCode is a library, with some classes, to be used to "pack" and "unpack" data informations from a string
 
 Instalation
 -----------
@@ -9,6 +13,11 @@ Instalation
      - Download the library, DCode.dll (Windows .NET) or DCode.jar (Java)
      - Include on your project
      - Use the classes and functions
+
+Download
+--------
+    
+    
     
 Documentation
 -------------
@@ -20,7 +29,7 @@ Compatibility
 -------------
 
     - DCode.dll:
-        
+        - .Net Framework v4.5
         
     - DCode.jar:
         - JDK 8

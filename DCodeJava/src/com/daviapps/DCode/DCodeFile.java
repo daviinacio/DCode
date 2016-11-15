@@ -56,6 +56,9 @@ public class DCodeFile {
         if(statusKey == ERROR){
             this.setTitle("ERROR LOAD");
             this.setEncodeType("ERROR LOAD");
+        } else
+        if(statusKey == EMPTY){
+            createBaseFile();
         }
     }
     

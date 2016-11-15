@@ -31,7 +31,19 @@ public class DCodePrefItemList {
     // Methods
     
     public void addItem(String key, String value){
+        System.out.println(key + " added with value: " + value);
         list.add(new DCodePrefItem(key, value));
+    }
+    
+    public boolean removeItem(String key){
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getKey().equals(key)){
+                list.remove(i);
+                System.out.println(key + " removed");
+                return true;
+            }
+        }
+        return false;
     }
     
     public DCodePrefItem getItem(String key){

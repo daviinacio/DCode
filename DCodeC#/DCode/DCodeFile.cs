@@ -19,7 +19,7 @@ public class DCodeFile {
     //private String externalStorage = "";
     
     // Static values
-    public static int ALRIGHT = 100, ERROR = 101, EMPTY = 102;
+    public static int ALRIGHT = 100, ERROR = 101, EMPTY = 102, NotFounded = 103;
 
     // File properties
     private String encodeType = "";
@@ -35,29 +35,28 @@ public class DCodeFile {
 
     public DCodeFile(String file){
         this.file = file;
-        this.path = Path.GetPathRoot(file);
+        this.path = Path.GetDirectoryName(file);
 
-        if(!this.getFileText().Equals("")){ // Alright
-            if(dcode.unCode(getFileText()).Length >= 4){
-                statusKey = ALRIGHT;
-                this.getText();
-            } else { // Last vertion encoder
-                statusKey = ERROR;
-            }
-        } else { // File empty
-            statusKey = EMPTY;
-        }
+        getStatusKey();
 
         if(statusKey == ERROR){
             this.setTitle("ERROR LOAD");
             this.setEncodeType("ERROR LOAD");
+        } else
+        if (statusKey == EMPTY) {
+            createBaseFile();
+        } else
+        if (statusKey == NotFounded) {
+            //File.Create(file);
+            //setFileText("");
+            createBaseFile();
         }
     }
     
     // Methods
     
     public void createBaseFile(){
-        if(this.getStatusKey() == EMPTY){
+        if(this.getStatusKey() == EMPTY || this.getStatusKey() == NotFounded){
             this.statusKey = ALRIGHT;
             this.setTitle(getFileName(file));
             this.setEncodeType("DCode");
@@ -109,16 +108,56 @@ public class DCodeFile {
     // File loaders
 
     private void setFileText(String fileText){
-        File.WriteAllText(file, fileText);
+        try {   // Open the text file using a stream reader.
+            using (StreamWriter sr = new StreamWriter(file)) {
+                // Read the stream to a string, and write the string to the console.
+                sr.Write(fileText);
+            }
+        } catch (Exception e) {
+            Console.WriteLine(e.Message);
+        }
+        //File.WriteAllText(file, fileText);
     }
 
     private String getFileText(){
-        return File.ReadAllText(file);
+        String fileText = "";
+
+        try {   // Open the text file using a stream reader.
+            using (StreamReader sr = new StreamReader(file)) {
+                // Read the stream to a string, and write the string to the console.
+                fileText = sr.ReadToEnd();
+            }
+        } catch (Exception e) {
+            Console.WriteLine(e.Message);
+        }
+
+        return fileText;
+        /*if (File.Exists(file)) {
+            return File.ReadAllText(file);
+        } else {
+            //File.Create(file);
+            File.CreateText(file);
+        }
+        return "";*/
     }
 
     // Getters and setters
 
     public int getStatusKey(){
+        if (File.Exists(file)) {
+            if (!this.getFileText().Equals("")) { // Alright
+                if (dcode.unCode(getFileText()).Length >= 4) {
+                    statusKey = ALRIGHT;
+                    this.getText();
+                } else { // Last vertion encoder
+                    statusKey = ERROR;
+                }
+            } else { // File empty
+                statusKey = EMPTY;
+            }
+        } else {
+            statusKey = NotFounded;
+        }
         return statusKey;
     }
 

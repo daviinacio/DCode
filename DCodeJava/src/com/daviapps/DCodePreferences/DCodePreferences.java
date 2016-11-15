@@ -55,6 +55,14 @@ public class DCodePreferences {
         return false; // If this item exists
     }
     
+    public boolean remove(String key){
+        if(list.contains(key)){
+            list.removeItem(key);
+            return true;
+        }
+        return false;
+    }
+    
     public boolean set(String key, String value){
         if(list.contains(key)){
             list.getItem(key).setValue(value);
@@ -77,6 +85,10 @@ public class DCodePreferences {
         return add(key, Integer.toString(value));
     }
     
+    public boolean add(String key, double value){ // AddDouble
+        return add(key, Double.toString(value));
+    }
+    
     public boolean add(String key, boolean value){ // AddBoolean
         return add(key, Boolean.toString(value));
     }
@@ -88,6 +100,10 @@ public class DCodePreferences {
     // Setters
     public boolean set(String key, int value){ // SetInteger
         return set(key, Integer.toString(value));
+    }
+    
+    public boolean set(String key, double value){ // SetDouble
+        return set(key, Double.toString(value));
     }
     
     public boolean set(String key, boolean value){ // SetBoolean
@@ -103,7 +119,7 @@ public class DCodePreferences {
         return get(key, null);
     }
     
-    public int getInt(String key, int ifNotFound){
+    public int getInt(String key, int ifNotFound){ // GetInteger
         try { return Integer.parseInt(get(key)); }
         catch (IndexOutOfBoundsException e) {
             System.out.println(e.toString());
@@ -111,37 +127,49 @@ public class DCodePreferences {
         return ifNotFound;
     }
     
-    public int getInt(String key){
+    public int getInt(String key){ // GetInteger
         return getInt(key, 0);
     }
     
-    public boolean getBool(String key, boolean ifNotFound){
-        try { return Boolean.parseBoolean(get(key)); }
-        catch (IndexOutOfBoundsException e){
-            System.out.println(e.toString());
+    public double getDouble(String key, double ifNotFound){ // GetDouble
+        try { return Double.parseDouble(get(key)); }
+        catch (IndexOutOfBoundsException e) {
+            System.err.println(e.toString());
         }
         return ifNotFound;
     }
     
-    public boolean getBool(String key){
+    public double getDouble(String key){ // GetDouble
+        return getDouble(key, 0);
+    }
+    
+    public boolean getBool(String key, boolean ifNotFound){ // GetBoolean
+        try { return Boolean.parseBoolean(get(key)); }
+        catch (IndexOutOfBoundsException e){
+            System.err.println(e.toString());
+        }
+        return ifNotFound;
+    }
+    
+    public boolean getBool(String key){ // GetBoolean
         return getBool(key, false);
     }
     
-    public Datas getDatas(String key, Datas ifNotFound){
+    public Datas getDatas(String key, Datas ifNotFound){ // GetDatas
         try { return Datas.parseDatas(get(key)); }
         catch (IndexOutOfBoundsException e){
-            System.out.println(e.toString());
+            System.err.println(e.toString());
         }
         return ifNotFound;
     }
     
-    public Datas getDatas(String key){
+    public Datas getDatas(String key){ // GetDatas
         return getDatas(key, new Datas()); // Return a empty datas if not founded
     }
     
-    // Getters, Setters and Adders array
+    // Getters, Setters, Adders and Removers array
     
-    // Adders
+    // Adders array
     public boolean add(String [] keys, String [] values){ // AddStringArray
         if(keys.length == values.length){
             for(int i = 0; i < keys.length; i++){
@@ -153,6 +181,16 @@ public class DCodePreferences {
     }
     
     public boolean add(String [] keys, int [] values){ // AddIntegerArray
+        if(keys.length == values.length){
+            for(int i = 0; i < keys.length; i++){
+                add(keys[i], values[i]);
+            }
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean add(String [] keys, double [] values){ // AddDoubleArray
         if(keys.length == values.length){
             for(int i = 0; i < keys.length; i++){
                 add(keys[i], values[i]);
@@ -182,7 +220,7 @@ public class DCodePreferences {
         return false;
     }
     
-    // Setters
+    // Setters array
     public boolean set(String [] keys, String [] values){ // SetStringArray
         if(keys.length == values.length){
             for(int i = 0; i < keys.length; i++){
@@ -194,6 +232,16 @@ public class DCodePreferences {
     }
     
     public boolean set(String [] keys, int [] values){ // SetIntegerArray
+        if(keys.length == values.length){
+            for(int i = 0; i < keys.length; i++){
+                set(keys[i], values[i]);
+            }
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean set(String [] keys, double [] values){ // SetDoubleArray
         if(keys.length == values.length){
             for(int i = 0; i < keys.length; i++){
                 set(keys[i], values[i]);
@@ -223,5 +271,101 @@ public class DCodePreferences {
         return false;
     }
     
-    // Getters
+    // Getters array
+    
+    public String [] get(String [] keys, String ifNotFound){ // GetStringArray
+        String [] outp = new String[keys.length];
+        for(int i = 0; i < keys.length; i++){
+            if(list.contains(keys[i])){
+                outp[i] = get(keys[i]);
+            } else {
+                outp[i] = ifNotFound;
+            }
+        }
+        return outp;
+    }
+    
+    public String [] get(String [] keys){ // GetStringArray
+        return get(keys, null);
+    }
+    
+    public int [] getInt(String [] keys, int ifNotFound){ // GetIntegerArray
+        int [] outp = new int[keys.length];
+        for(int i = 0; i < keys.length; i++){
+            if(list.contains(keys[i])){
+                outp[i] = getInt(keys[i]);
+            } else {
+                outp[i] = ifNotFound;
+            }
+        }
+        return outp;
+    }
+    
+     public int [] getInt(String [] keys){ // GetIntegerArray
+         return getInt(keys, 0);
+     }
+    
+    public double [] getDouble(String [] keys, double ifNotFound){ // GetDoubleArray
+        double [] outp = new double[keys.length];
+        for(int i = 0; i < keys.length; i++){
+            if(list.contains(keys[i])){
+                outp[i] = getInt(keys[i]);
+            } else {
+                outp[i] = ifNotFound;
+            }
+        }
+        return outp;
+    }
+    
+    public double [] getDouble(String [] keys){ // GetDoubleArray
+        return getDouble(keys, 0);
+    }
+    
+    public boolean [] getBool(String [] keys, boolean ifNotFound){ // GetBooleanArray
+        boolean [] outp = new boolean[keys.length];
+        for(int i = 0; i < keys.length; i++){
+            if(list.contains(keys[i])){
+                outp[i] = getBool(keys[i]);
+            } else {
+                outp[i] = ifNotFound;
+            }
+        }
+        return outp;
+    }
+    
+    public boolean [] getBool(String [] keys){ // GetBooleanArray
+        return getBool(keys, false);
+    }
+    
+    public Datas [] getDatas(String [] keys, Datas ifNotFound){ // GetDatasArray
+        Datas [] outp = new Datas[keys.length];
+        for(int i = 0; i < keys.length; i++){
+            if(list.contains(keys[i])){
+                outp[i] = getDatas(keys[i]);
+            } else {
+                outp[i] = ifNotFound;
+            }
+        }
+        return outp;
+    }
+    
+    public Datas [] getDatas(String [] keys){ // GetDatasArray
+        return getDatas(keys, new Datas());
+    }
+    
+    // Removers array
+    
+    public void remove(String [] keys){
+        for (String key : keys) {
+            remove(key);
+        }
+    }
+    
+    // Override methods
+
+    @Override
+    public String toString() {
+        return list.toString();
+    }
+    
 }

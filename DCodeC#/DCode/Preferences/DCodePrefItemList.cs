@@ -38,6 +38,18 @@ public class DCodePrefItemList {
         list.Add(new DCodePrefItem(key, value));
     }
 
+    public bool removeItem(String key){
+        DCodePrefItem [] items = list.ToArray();
+        for (int i = 0; i < items.Length; i++) {
+            if (items [i].getKey().Equals(key)) {
+                list.RemoveAt(i);
+                Console.WriteLine(key + " removed");
+                return true;
+            }
+        }
+        return false;
+    }
+
     public DCodePrefItem getItem(String key) {
         DCodePrefItem [] items = list.ToArray();
         for (int i = 0; i < items.Length; i++) {
