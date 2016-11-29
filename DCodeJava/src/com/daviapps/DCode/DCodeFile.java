@@ -19,10 +19,9 @@ public class DCodeFile {
     // Private variables
     protected File path, file;
     protected int statusKey;
-    //private String externalStorage = "";
     
     // Static values
-    public static int ALRIGHT = 100, ERROR = 101, EMPTY = 102;
+    public static int ALRIGHT = 100, ERROR = 101, EMPTY = 102, NOTFOUNDED = 103;
 
     // File properties
     private String encodeType = "";
@@ -42,16 +41,8 @@ public class DCodeFile {
     public DCodeFile(File file){
         this.file = file;
         this.path = file.getParentFile();
-        if(!this.getFileText().equals("")){ // Alright
-            if(dcode.unCode(getFileText()).length >= 4){
-                statusKey = ALRIGHT;
-                this.getText();
-            } else { // Last vertion encoder
-                statusKey = ERROR;
-            }
-        } else { // File empty
-            statusKey = EMPTY;
-        }
+        
+        this.getStatusKey();
 
         if(statusKey == ERROR){
             this.setTitle("ERROR LOAD");
@@ -59,13 +50,16 @@ public class DCodeFile {
         } else
         if(statusKey == EMPTY){
             createBaseFile();
+        } else
+        if(statusKey == NOTFOUNDED){
+            
         }
     }
     
     // Methods
     
     public void createBaseFile(){
-        if(this.getStatusKey() == EMPTY){
+        if(this.getStatusKey() == EMPTY || this.getStatusKey() == NOTFOUNDED){
             this.statusKey = ALRIGHT;
             this.setTitle(file.getName());
             this.setEncodeType("DCode");
@@ -174,8 +168,22 @@ public class DCodeFile {
     }
 
     // Getters and setters
-
+    
     public int getStatusKey(){
+        if (file.exists()) {
+            if (!this.getFileText().equals("")) { // Alright
+                if (dcode.unCode(getFileText()).length >= 4) {
+                    statusKey = ALRIGHT;
+                    this.getText();
+                } else { // Last vertion encoder
+                    statusKey = ERROR;
+                }
+            } else { // File empty
+                statusKey = EMPTY;
+            }
+        } else {
+            statusKey = NOTFOUNDED;
+        }
         return statusKey;
     }
 

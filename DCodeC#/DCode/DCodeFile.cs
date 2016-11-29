@@ -13,13 +13,11 @@ public class DCodeFile {
     private DCode dcode = new DCode('{', '_', '}');
     
     // Private variables
-    //protected File path, file;
     private String path, file;
     protected int statusKey;
-    //private String externalStorage = "";
     
     // Static values
-    public static int ALRIGHT = 100, ERROR = 101, EMPTY = 102, NotFounded = 103;
+    public static int ALRIGHT = 100, ERROR = 101, EMPTY = 102, NOTFOUNDED = 103;
 
     // File properties
     private String encodeType = "";
@@ -37,7 +35,7 @@ public class DCodeFile {
         this.file = file;
         this.path = Path.GetDirectoryName(file);
 
-        getStatusKey();
+        this.getStatusKey();
 
         if(statusKey == ERROR){
             this.setTitle("ERROR LOAD");
@@ -46,17 +44,15 @@ public class DCodeFile {
         if (statusKey == EMPTY) {
             createBaseFile();
         } else
-        if (statusKey == NotFounded) {
-            //File.Create(file);
-            //setFileText("");
-            createBaseFile();
+        if (statusKey == NOTFOUNDED) {
+            //createBaseFile();
         }
     }
     
     // Methods
     
     public void createBaseFile(){
-        if(this.getStatusKey() == EMPTY || this.getStatusKey() == NotFounded){
+        if (this.getStatusKey() == EMPTY || this.getStatusKey() == NOTFOUNDED) {
             this.statusKey = ALRIGHT;
             this.setTitle(getFileName(file));
             this.setEncodeType("DCode");
@@ -156,7 +152,7 @@ public class DCodeFile {
                 statusKey = EMPTY;
             }
         } else {
-            statusKey = NotFounded;
+            statusKey = NOTFOUNDED;
         }
         return statusKey;
     }
