@@ -74,6 +74,7 @@ public class DCode {
         return out;
     }
 
+    //Temporary function
     public String enCodeI(String [] in){
         String out = "" + open;
 
@@ -82,6 +83,68 @@ public class DCode {
         }
 
         out = out + close;
+
+        return out;
+    }
+    
+    public String enCode(String [] in){
+        return enCode(this, in);
+    }
+    
+    public String enCode(String [][] in){
+        return enCode(this, in);
+    }
+    
+    public String enCode(DCode dcode1, String [][] in){
+        return enCode(this, dcode1, in);
+    }
+    
+    public String enCode(String [][][] in){
+        return enCode(this, in);
+    }
+    
+    public String enCode(DCode dcode2, String [][][] in){
+        return enCode(this, dcode2, in);
+    }
+    
+    public String enCode(DCode dcode1, DCode dcode2, String [][][] in){
+        return enCode(this, dcode1, dcode2, in);
+    }
+    
+    // Encode Method
+    
+    protected String enCode(DCode dcode, String [] in){ // Unidimencional
+        String out = "" + dcode.open;
+
+        for(int i = 0; i < in.length; i++){
+            out = out + in[i] + dcode.space;
+        }
+
+        out = out + dcode.close;
+
+        return out;
+    }
+    
+    protected String enCode(DCode dcode1, DCode dcode2, String [][] in){ // Bidimencional
+        String out = "" + dcode1.open;
+
+        for(int i = 0; i < in.length; i++){
+            out = out + enCode(dcode2, in[i]) + dcode1.space;
+        }
+
+        out = out + dcode1.close;
+
+        return out;
+    }
+    
+    protected String enCode(DCode dcode1, DCode dcode2, DCode dcode3, String [][][] in){ // Tridimencional
+        String out = "" + dcode1.open;
+
+        for(int i = 0; i < in.length; i++){
+            out = out + enCode(dcode2, dcode3, in[i]) + dcode1.space;
+        }
+
+        out = out + dcode1.close;
 
         return out;
     }
