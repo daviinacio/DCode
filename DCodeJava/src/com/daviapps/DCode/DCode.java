@@ -6,13 +6,30 @@ package com.daviapps.DCode;
 
 public class DCode {
     protected char open, space, close;
+    // DCode modes
+    public static int NORMAL = 0, DATAs = 1, ARRAY = 2, FILE = 3;
 
     public DCode(){ // For use static methods
-        open = '<'; space = ';'; close = '>';
+        this(NORMAL);
     }
 
     public DCode(char open, char space, char close){
         this.open = open; this.space = space; this.close = close;
+    }
+    
+    public DCode(int mode){
+        if(mode == this.NORMAL){
+            open = '<'; space = ';'; close = '>';
+        } else
+        if(mode == this.DATAs){
+            open = '('; space = '/'; close = ')';
+        } else
+        if(mode == this.ARRAY){
+            open = '['; space = ':'; close = ']';
+        } else
+        if(mode == this.FILE){
+            open = '{'; space = '_'; close = '}';
+        }
     }
 
     public String [] unCode(String in){
@@ -75,6 +92,7 @@ public class DCode {
     }
 
     //Temporary function
+    @Deprecated
     public String enCodeI(String [] in){
         String out = "" + open;
 
@@ -87,27 +105,27 @@ public class DCode {
         return out;
     }
     
-    public String enCode(String [] in){
+    public String enCode(String [] in){ // Unidimencional
         return enCode(this, in);
     }
     
-    public String enCode(String [][] in){
+    public String enCode(String [][] in){ // Bidimencional
         return enCode(this, in);
     }
     
-    public String enCode(DCode dcode1, String [][] in){
+    public String enCode(DCode dcode1, String [][] in){ // Bidimencional
         return enCode(this, dcode1, in);
     }
     
-    public String enCode(String [][][] in){
+    public String enCode(String [][][] in){ // Tridimencional
         return enCode(this, in);
     }
     
-    public String enCode(DCode dcode2, String [][][] in){
+    public String enCode(DCode dcode2, String [][][] in){ // Tridimencional
         return enCode(this, dcode2, in);
     }
     
-    public String enCode(DCode dcode1, DCode dcode2, String [][][] in){
+    public String enCode(DCode dcode1, DCode dcode2, String [][][] in){ // Tridimencional
         return enCode(this, dcode1, dcode2, in);
     }
     
@@ -148,7 +166,7 @@ public class DCode {
 
         return out;
     }
-
+    
     public int lenght(String in){
         int out = 0;
         char [] _in = in.toCharArray();
@@ -171,18 +189,63 @@ public class DCode {
                 if(_in[i] == '\r') continue;
             }
         }
-
+        
         return out;
     }
     
+    @Deprecated
+    public boolean verify(String in){
+        int opens = countNum(in, this.open);
+        int spaces = countNum(in, this.space);
+        int closes = countNum(in, this.close);
+        
+        //int dimention = dimentions(in);
+        //int length = this.unCode(in).length;
+        
+        boolean isAlReady = (
+                    opens == closes
+                );
+        
+        return isAlReady;
+    }
+    
+    // Getters and Setters
+    
+    public int getMode(){ // To use this methods, the string most be some itens
+        return DCode.getMode(this.enCode(new String[] {"Dcode", ""}));
+    }
+    
     // Internal methods
+    
+    public static int getMode(String in){ // To use this methods, the string most be some itens
+        String [] normal = new DCode(NORMAL).unCode(in);
+        String [] datas = new DCode(DATAs).unCode(in);
+        String [] array = new DCode(ARRAY).unCode(in);
+        String [] file = new DCode(FILE).unCode(in);
+        
+        if(normal.length > 0)
+            return NORMAL;
+        else
+        if(datas.length > 0)
+            return DATAs;
+        else
+        if(array.length > 0)
+            return ARRAY;
+        else
+        if(file.length > 0)
+            return FILE;
+        
+        return NORMAL;
+    }
 
+    @Deprecated
     protected int dimentions(String in){
         return DCode.dimentions(this, in);
     }
 
     // Static methods
 
+    @Deprecated
     public static int dimentions(DCode dcode, String in){
         int out = 0;
         char [] _in = in.toCharArray();
@@ -204,6 +267,7 @@ public class DCode {
         return out;
     }
 
+    @Deprecated
     public static int countNum(String in, char c){
         int out = 0;
         char [] _in = in.toCharArray();
@@ -213,5 +277,9 @@ public class DCode {
         }
 
         return out;
+    }
+    
+    public static int lenght(DCode dcode, String in){ // This can generate a infinity loop with uncode
+        return dcode.unCode(in).length;
     }
 }
