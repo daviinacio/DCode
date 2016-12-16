@@ -14,14 +14,15 @@ import java.io.InputStreamReader;
  */
 
 public class DCodeFile {
-    protected final DCode dcode = new DCode('{', '_', '}');
+    //protected final DCode dcode = new DCode('{', '_', '}');
+    protected DCode dcode;
     
     // Private variables
     protected File path, file;
     protected int statusKey;
     
     // Static values
-    public static int ALRIGHT = 100, ERROR = 101, EMPTY = 102, NOTFOUNDED = 103;
+    public static int ALRIGHT = 100, ERROR = 101, EMPTY = 102, NOTFOUNDED = 103, OTHERENCODER = 104;
 
     // File properties
     private String encodeType = "";
@@ -42,17 +43,26 @@ public class DCodeFile {
         this.file = file;
         this.path = file.getParentFile();
         
+        this.dcode = new DCode(DCode.FILE);
+        
         this.getStatusKey();
+        
+        if(this.getStatusKey() == DCodeFile.OTHERENCODER) // Set DCode mode to mode of file
+            if(DCode.getMode(this.getFileText()) != DCode.UNKNOWN) // If isn't unknown mode
+                this.dcode = new DCode(DCode.getMode(this.getFileText())); // Set dcode to this mode
 
         if(statusKey == ERROR){
             this.setTitle("ERROR LOAD");
-            this.setEncodeType("ERROR LOAD");
+            //this.setEncodeType("ERROR LOAD");
         } else
         if(statusKey == EMPTY){
-            createBaseFile();
+            this.setTitle("EMPTY");
+            //this.setEncodeType("EMPTY");
+            //createBaseFile();
         } else
         if(statusKey == NOTFOUNDED){
-            
+            this.setTitle("NOT FOUNDED");
+            this.setEncodeType("NOT FOUNDED");
         }
     }
     
@@ -83,7 +93,7 @@ public class DCodeFile {
 
     public void setText(String text){
         if(statusKey != ERROR){
-            setFileText(dcode.enCodeI(new String[] {
+            setFileText(dcode.enCode(new String[] {
                 encodeType, title, passWd, text
             }));
         }
@@ -103,9 +113,11 @@ public class DCodeFile {
             }
 
             return props[3];
-        }
-
-        return "Error LOAD";
+        } else
+        if(statusKey == NOTFOUNDED)
+            return "NOT FOUNDED";
+        
+        return "ERROR LOAD";
     }
 
     // File loaders
@@ -175,15 +187,16 @@ public class DCodeFile {
                 if (dcode.unCode(getFileText()).length >= 4) {
                     statusKey = ALRIGHT;
                     this.getText();
-                } else { // Last vertion encoder
+                } else
+                if(DCode.getMode(this.getFileText()) != dcode.getMode()){ // Isn,t currently dcode mode
+                    statusKey = OTHERENCODER;
+                }else // Last vertion encoder
                     statusKey = ERROR;
-                }
-            } else { // File empty
+            } else // File empty
                 statusKey = EMPTY;
-            }
-        } else {
+        } else
             statusKey = NOTFOUNDED;
-        }
+        
         return statusKey;
     }
 
@@ -226,20 +239,24 @@ public class DCodeFile {
     
     // Internal methods
     
+    @Deprecated
     public String getFileName(){
         return getFileName(file);
     }
     
+    @Deprecated
     public boolean isDCodeExtention(){
         return isDCodeExtention(file);
     }
     
+    @Deprecated
     public String getLast4Chars(){
         return getLast4Chars(file);
     }
 
     // static methods
 
+    @Deprecated
     public static String getFileName(File file){
         char [] name = file.getName().toCharArray();
         String out = "";
@@ -249,6 +266,7 @@ public class DCodeFile {
         return out;
     }
 
+    @Deprecated
     public static boolean isDCodeExtention(File file){
         String last4chars = getLast4Chars(file);
         boolean out = (
@@ -261,6 +279,7 @@ public class DCodeFile {
         return out;
     }
 
+    @Deprecated
     public static String getLast4Chars(File file){
         char [] name = file.getName().toCharArray();
         String last4chars = "";
@@ -273,4 +292,27 @@ public class DCodeFile {
 
         return last4chars;
     }
+    
+    // Override methods
+
+    @Override
+    public String toString() {
+        if(this.getStatusKey() == DCodeFile.ALRIGHT)
+            return dcode.enCode(new String[] {this.getEncodeType(), this.getTitle(), this.getPassWd(), this.getText()});
+        else
+        if(this.getStatusKey() == DCodeFile.ERROR)
+            return "ERROR";
+        else
+        if(this.getStatusKey() == DCodeFile.EMPTY)
+            return "EMPTY";
+        else
+        if(this.getStatusKey() == DCodeFile.NOTFOUNDED)
+            return "NOT FOUNDED";
+        else
+        if(DCode.getMode(this.getFileText()) == DCode.UNKNOWN)
+            return "UNKNOWN MODE";
+        return null;
+    }
+    
+    
 }

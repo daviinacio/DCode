@@ -7,7 +7,7 @@ package com.daviapps.DCode;
 public class DCode {
     protected char open, space, close;
     // DCode modes
-    public static int NORMAL = 0, DATAs = 1, ARRAY = 2, FILE = 3;
+    public static int UNKNOWN = -1, NORMAL = 0, DATAs = 1, ARRAY = 2, FILE = 3;
 
     public DCode(){ // For use static methods
         this(NORMAL);
@@ -18,19 +18,21 @@ public class DCode {
     }
     
     public DCode(int mode){
-        if(mode == this.NORMAL){
+        if(mode == DCode.NORMAL || mode == DCode.UNKNOWN){
             open = '<'; space = ';'; close = '>';
         } else
-        if(mode == this.DATAs){
+        if(mode == DCode.DATAs){
             open = '('; space = '/'; close = ')';
         } else
-        if(mode == this.ARRAY){
+        if(mode == DCode.ARRAY){
             open = '['; space = ':'; close = ']';
         } else
-        if(mode == this.FILE){
+        if(mode == DCode.FILE){
             open = '{'; space = '_'; close = '}';
         }
     }
+    
+    // enCode and unCode
 
     public String [] unCode(String in){
         String [] out = new String[lenght(in)];
@@ -155,6 +157,7 @@ public class DCode {
         return out;
     }
     
+    
     protected String enCode(DCode dcode1, DCode dcode2, DCode dcode3, String [][][] in){ // Tridimencional
         String out = "" + dcode1.open;
 
@@ -216,6 +219,13 @@ public class DCode {
     }
     
     // Internal methods
+
+    @Deprecated
+    protected int dimentions(String in){
+        return DCode.dimentions(this, in);
+    }
+
+    // Static methods
     
     public static int getMode(String in){ // To use this methods, the string most be some itens
         String [] normal = new DCode(NORMAL).unCode(in);
@@ -235,15 +245,8 @@ public class DCode {
         if(file.length > 0)
             return FILE;
         
-        return NORMAL;
+        return UNKNOWN;
     }
-
-    @Deprecated
-    protected int dimentions(String in){
-        return DCode.dimentions(this, in);
-    }
-
-    // Static methods
 
     @Deprecated
     public static int dimentions(DCode dcode, String in){
