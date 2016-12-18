@@ -8,9 +8,11 @@ import java.io.File;
  */
 
 public class DCodePreferences {
-    protected DCodeFile file;
     protected final DCode dcode = new DCode(DCode.ARRAY);
+    
+    // Private variables
     protected DCodePrefItemList list;
+    protected DCodeFile file;
     
     // Constructors
     
@@ -29,24 +31,27 @@ public class DCodePreferences {
     // Main constructor
     public DCodePreferences(DCodeFile file){
         this.file = file;
-        if(file.getStatusKey() == DCodeFile.ALRIGHT){
-            System.out.println("Alright");
-        } else
+        
         if(file.getStatusKey() == DCodeFile.EMPTY){
-            System.err.println("Empty");
+            System.err.println("File empty, base file ceated");
             file.createBaseFile();
-            System.out.println("Base file created");
         } else
         if(file.getStatusKey() == DCodeFile.NOTFOUNDED){
-            System.err.println("Not Founded");
-            file.createBaseFile();
-        }
+            System.err.println("File not founded, file created");
+            file.createFile();
+        } else
         if(file.getStatusKey() == DCodeFile.ERROR){
-            System.err.println("Error");
+            System.err.println("File error load");
+        } else
+        if(file.getStatusKey() == DCodeFile.OTHERENCODER) {
+            System.err.println("File with other encode mode");
         }
         
-        if(file.getStatusKey() == DCodeFile.ALRIGHT)
+        // Second verification
+        if(file.getStatusKey() == DCodeFile.ALRIGHT){
+            System.out.println("Preference: ALRIGHT");
             list = new DCodePrefItemList(dcode, file.getText());
+        }
     }
     
     // Loader methods

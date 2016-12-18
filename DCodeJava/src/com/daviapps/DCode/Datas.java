@@ -7,14 +7,13 @@ import java.util.Calendar;
  */
 
 public class Datas {
-    protected DCode dcode = new DCode(DCode.DATAs);
+    protected final DCode dcode = new DCode(DCode.DATAs);
 
     // Private variables
     protected int day, month;
     protected String year;
     
     protected Calendar calendar;
-    //protected Time today;
     
     // Init methods
     

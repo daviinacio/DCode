@@ -9,8 +9,10 @@ import java.util.List;
  */
 
 public class DCodePrefItemList {
-    protected List<DCodePrefItem> list;
     protected DCode dcode;
+    
+    // Private variables
+    protected List<DCodePrefItem> list;
     
     // Contructors
     
@@ -65,9 +67,8 @@ public class DCodePrefItemList {
     
     public static String [] toStringArray(DCodePrefItem[] item){
         String [] _item = new String[item.length];
-        for(int i = 0; i < _item.length; i++){
+        for(int i = 0; i < _item.length; i++)
             _item[i] = item[i].toString();
-        }
         return _item;
     }
     
@@ -77,25 +78,22 @@ public class DCodePrefItemList {
     
     public static DCodePrefItem[] toItemArray(String [] items){
         DCodePrefItem [] _items = new DCodePrefItem[items.length];
-        for(int i = 0; i < _items.length; i++){
+        for(int i = 0; i < _items.length; i++)
             _items[i] = new DCodePrefItem(items[i]);
-        }
         return _items;
     }
     
     public static List<DCodePrefItem> toList(DCodePrefItem [] items){
         List<DCodePrefItem> list = new ArrayList<>();
-        for(int i = 0; i < items.length; i++){
+        for(int i = 0; i < items.length; i++)
             list.add(items[i]);
-        }
         return list;
     }
     
     public static DCodePrefItem [] toItemArray(List<DCodePrefItem> items){
         DCodePrefItem [] out = new DCodePrefItem[items.size()];
-        for(int i = 0; i < items.size(); i++){
+        for(int i = 0; i < items.size(); i++)
             out[i] = items.get(i);
-        }
         return out;
     }
     
@@ -109,7 +107,7 @@ public class DCodePrefItemList {
 
     @Override
     public String toString() {
-        return dcode.enCodeI(toStringArray(list));
+        return dcode.enCode(toStringArray(list));
     }
     
 }

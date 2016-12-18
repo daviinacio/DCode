@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Davi
@@ -68,8 +70,16 @@ public class DCodeFile {
     
     // Methods
     
+    public void createFile(){
+        if(this.getStatusKey() == DCodeFile.NOTFOUNDED){
+            try { file.createNewFile(); } catch (IOException ex) {}
+            if(file.exists())
+                createBaseFile();
+        }
+    }
+    
     public void createBaseFile(){
-        if(this.getStatusKey() == EMPTY || this.getStatusKey() == NOTFOUNDED){
+        if(this.getStatusKey() == DCodeFile.EMPTY){
             this.statusKey = ALRIGHT;
             this.setTitle(file.getName());
             this.setEncodeType("DCode");

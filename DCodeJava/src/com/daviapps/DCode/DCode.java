@@ -7,8 +7,10 @@ package com.daviapps.DCode;
 public class DCode {
     protected char open, space, close;
     // DCode modes
-    public static int UNKNOWN = -1, NORMAL = 0, DATAs = 1, ARRAY = 2, FILE = 3;
+    public static int UNKNOWN = -1, NORMAL = 0, DATAs = 1, ARRAY = 2, FILE = 3, SMALL = 4;
 
+    // Constructors
+    
     public DCode(){ // For use static methods
         this(NORMAL);
     }
@@ -29,6 +31,9 @@ public class DCode {
         } else
         if(mode == DCode.FILE){
             open = '{'; space = '_'; close = '}';
+        } else
+        if(mode == DCode.SMALL) {
+            open = '.'; space = ','; close = '#';
         }
     }
     
@@ -232,6 +237,7 @@ public class DCode {
         String [] datas = new DCode(DATAs).unCode(in);
         String [] array = new DCode(ARRAY).unCode(in);
         String [] file = new DCode(FILE).unCode(in);
+        String [] small = new DCode(SMALL).unCode(in);
         
         if(normal.length > 0)
             return NORMAL;
@@ -244,6 +250,9 @@ public class DCode {
         else
         if(file.length > 0)
             return FILE;
+        else
+        if(small.length > 0)
+            return SMALL;
         
         return UNKNOWN;
     }
