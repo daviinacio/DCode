@@ -9,13 +9,17 @@ import java.io.File;
 
 public class DCodePreferences {
     protected DCodeFile file;
-    protected final DCode dcode = new DCode('[', ':', ']');
+    protected final DCode dcode = new DCode(DCode.ARRAY);
     protected DCodePrefItemList list;
     
     // Constructors
     
     public DCodePreferences(String file){
         this(new File(file));
+    }
+    
+    public DCodePreferences(String pakegeName, String fileName){
+        this(new DCodeFile("/android/data/" + pakegeName, fileName));
     }
     
     public DCodePreferences(File file){
@@ -27,16 +31,22 @@ public class DCodePreferences {
         this.file = file;
         if(file.getStatusKey() == DCodeFile.ALRIGHT){
             System.out.println("Alright");
-            list = new DCodePrefItemList(dcode, file.getText());
         } else
         if(file.getStatusKey() == DCodeFile.EMPTY){
             System.err.println("Empty");
             file.createBaseFile();
             System.out.println("Base file created");
         } else
+        if(file.getStatusKey() == DCodeFile.NOTFOUNDED){
+            System.err.println("Not Founded");
+            file.createBaseFile();
+        }
         if(file.getStatusKey() == DCodeFile.ERROR){
             System.err.println("Error");
         }
+        
+        if(file.getStatusKey() == DCodeFile.ALRIGHT)
+            list = new DCodePrefItemList(dcode, file.getText());
     }
     
     // Loader methods
@@ -94,7 +104,7 @@ public class DCodePreferences {
     }
     
     public boolean add(String key, Datas value){ // AddDatas
-        return add(key, value.toString());
+        return add(key, Datas.toString(value));
     }
     
     // Setters
@@ -111,7 +121,7 @@ public class DCodePreferences {
     }
     
     public boolean set(String key, Datas value){ // SetDatas
-        return set(key, value.toString());
+        return set(key, Datas.toString(value));
     }
     
     // Getters

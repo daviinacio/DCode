@@ -7,7 +7,7 @@ import java.util.Calendar;
  */
 
 public class Datas {
-    protected DCode dcode = new DCode('(', '/', ')');
+    protected DCode dcode = new DCode(DCode.DATAs);
 
     // Private variables
     protected int day, month;
@@ -79,7 +79,7 @@ public class Datas {
     }
     
     public  static  String toString(Datas data){
-        return data.dcode.enCodeI(new String[] {"" + data.getDay(), "" + data.getMonth(), data.getYear()});
+        return data.dcode.enCode(new String[] {"" + data.getDay(), "" + data.getMonth(), data.getYear()});
     }
 
     // Override methods
