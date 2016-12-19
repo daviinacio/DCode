@@ -10,49 +10,59 @@ using System.IO;
  */
 
 public class DCodeFile {
-    private DCode dcode = new DCode('{', '_', '}');
+    private DCode dcode;
     
     // Private variables
     private String path, file;
     protected int statusKey;
     
     // Static values
-    public static int ALRIGHT = 100, ERROR = 101, EMPTY = 102, NOTFOUNDED = 103;
+    public static int ALRIGHT = 100, ERROR = 101, EMPTY = 102, NOTFOUNDED = 103, OTHERENCODER = 104;
 
     // File properties
     private String encodeType = "";
     private String title = "";
     private String passWd = "";
-    //private String text = "";
     
     // Constructors
-
-    /*public DCodeFile(String pathName, String fileName){
-        this(new File(Environment.getExternalStorageDirectory(), "/" + pathName + "/" + fileName));
-    }*/
 
     public DCodeFile(String file){
         this.file = file;
         this.path = Path.GetDirectoryName(file);
 
-        this.getStatusKey();
+        this.dcode = new DCode(DCode.FILE);
 
-        if(statusKey == ERROR){
+        //this.getStatusKey();
+
+        if(this.getStatusKey() == DCodeFile.OTHERENCODER) // Set DCode mode to mode of file
+            if(DCode.getMode(this.getFileText()) != DCode.UNKNOWN) // If isn't unknown mode
+                this.dcode = new DCode(DCode.getMode(this.getFileText())); // Set dcode to this mode
+
+        if (statusKey == ERROR) {
             this.setTitle("ERROR LOAD");
-            this.setEncodeType("ERROR LOAD");
+            //this.setEncodeType("ERROR LOAD");
         } else
         if (statusKey == EMPTY) {
-            createBaseFile();
+            this.setTitle("EMPTY");
+            //this.setEncodeType("EMPTY");
+            //createBaseFile();
         } else
         if (statusKey == NOTFOUNDED) {
-            //createBaseFile();
+            this.setTitle("NOT FOUNDED");
+            this.setEncodeType("NOT FOUNDED");
         }
     }
     
     // Methods
+
+    public void createFile() {
+        if (this.getStatusKey() == DCodeFile.NOTFOUNDED) {
+            this.setFileText("");
+        }
+    }
     
     public void createBaseFile(){
-        if (this.getStatusKey() == EMPTY || this.getStatusKey() == NOTFOUNDED) {
+        if (this.getStatusKey() == EMPTY) {
             this.statusKey = ALRIGHT;
             this.setTitle(getFileName(file));
             this.setEncodeType("DCode");
@@ -96,7 +106,9 @@ public class DCodeFile {
             }
 
             return props[3];
-        }
+        } else
+        if (statusKey == NOTFOUNDED)
+            return "NOT FOUNDED";
 
         return "Error LOAD";
     }
@@ -145,8 +157,11 @@ public class DCodeFile {
                 if (dcode.unCode(getFileText()).Length >= 4) {
                     statusKey = ALRIGHT;
                     this.getText();
+                } else
+                if (DCode.getMode(this.getFileText()) != dcode.getMode()) { // Isn,t currently dcode mode
+                    statusKey = OTHERENCODER;
                 } else { // Last vertion encoder
-                    statusKey = ERROR;
+                statusKey = ERROR;
                 }
             } else { // File empty
                 statusKey = EMPTY;
@@ -234,6 +249,25 @@ public class DCodeFile {
         }
 
         return last4chars;
+    }
+
+    override
+    public String toString() {
+        if(this.getStatusKey() == DCodeFile.ALRIGHT)
+            return dcode.enCode(new String[] {this.getEncodeType(), this.getTitle(), this.getPassWd(), this.getText()});
+        else
+        if(this.getStatusKey() == DCodeFile.ERROR)
+            return "ERROR";
+        else
+        if(this.getStatusKey() == DCodeFile.EMPTY)
+            return "EMPTY";
+        else
+        if(this.getStatusKey() == DCodeFile.NOTFOUNDED)
+            return "NOT FOUNDED";
+        else
+        if(DCode.getMode(this.getFileText()) == DCode.UNKNOWN)
+            return "UNKNOWN MODE";
+        return null;
     }
 
 }

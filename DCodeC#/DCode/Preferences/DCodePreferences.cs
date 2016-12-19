@@ -9,8 +9,10 @@ using System.Threading.Tasks;
  */
 
 public class DCodePreferences {
+    private DCode dcode = new DCode(DCode.ARRAY);
+
+    // Private variables
     private DCodeFile file;
-    private DCode dcode = new DCode('[', ':', ']');
     private DCodePrefItemList list;
 
     // Constructors
@@ -26,17 +28,26 @@ public class DCodePreferences {
     // Main constructor
     private void This(DCodeFile file) {
         this.file = file;
-        if (file.getStatusKey() == DCodeFile.ALRIGHT) {
-            Console.WriteLine("Alright");
-            list = new DCodePrefItemList(dcode, file.getText());
-        } else
-        if (file.getStatusKey() == DCodeFile.EMPTY) {
-            Console.WriteLine("Empty");
+        
+        if(file.getStatusKey() == DCodeFile.EMPTY){
+            Console.WriteLine("File empty, base file ceated");
             file.createBaseFile();
-            Console.WriteLine("Base file created");
         } else
-        if (file.getStatusKey() == DCodeFile.ERROR) {
-            Console.WriteLine("Error");
+        if(file.getStatusKey() == DCodeFile.NOTFOUNDED){
+            Console.WriteLine("File not founded, file created");
+            file.createFile();
+        } else
+        if(file.getStatusKey() == DCodeFile.ERROR){
+            Console.WriteLine("File error load");
+        } else
+        if(file.getStatusKey() == DCodeFile.OTHERENCODER) {
+            Console.WriteLine("File with other encode mode");
+        }
+        
+        // Second verification
+        if(file.getStatusKey() == DCodeFile.ALRIGHT){
+            Console.WriteLine("Preference: ALRIGHT");
+            list = new DCodePrefItemList(dcode, file.getText());
         }
     }
 

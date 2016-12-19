@@ -10,25 +10,18 @@ using System.Globalization;
  */
 
 public class Datas {
-    private DCode dcode = new DCode('(', '/', ')');
+    private DCode dcode = new DCode(DCode.DATAs);
 
     // Private variables
     private int day, month;
     private String year;
     
     private DateTime today;
-    //protected Time today;
     
     // Init methods
     
     private void initCalendar(){
-        /*DateTime today = DateTime.Today;
-	    DateTime now = DateTime.Now;
-
-	    Console.WriteLine(today);
-	    Console.WriteLine(now);*/
         today = DateTime.Today;
-        //calendar = new Calendar();
     }
 
     // Constructors
@@ -88,7 +81,7 @@ public class Datas {
     }
     
     public  static  String toString(Datas data){
-        return data.dcode.enCodeI(new String [] { "" + data.getDay(), "" + data.getMonth(), data.getYear() });
+        return data.dcode.enCode(new String [] { "" + data.getDay(), "" + data.getMonth(), data.getYear() });
     }
 
     // Override methods

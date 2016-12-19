@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 public class DCode {
     private char open, space, close;
     // DCode modes
-    public static int NORMAL = 0, DATAs = 1, ARRAY = 2, FILE = 3;
+    public static int UNKNOWN = -1, NORMAL = 0, DATAs = 1, ARRAY = 2, FILE = 3, SMALL = 4;
 
     public DCode() { // For use static methods
         open = '<'; space = ';'; close = '>';
@@ -22,7 +22,7 @@ public class DCode {
     }
 
     public DCode(int mode) {
-        if (mode == DCode.NORMAL) {
+        if (mode == DCode.NORMAL || mode == DCode.UNKNOWN) {
             open = '<'; space = ';'; close = '>';
         } else
         if (mode == DCode.DATAs) {
@@ -33,6 +33,9 @@ public class DCode {
         } else
         if (mode == DCode.FILE) {
             open = '{'; space = '_'; close = '}';
+        } else
+        if (mode == DCode.SMALL) {
+            open = '.'; space = ','; close = '#';
         }
     }
 
@@ -76,9 +79,8 @@ public class DCode {
         String [] _out = unCode(inp);
         String [] [] outp = new String [_out.Length] [];
 
-        for (int i = 0; i < _out.Length; i++) {
+        for (int i = 0; i < _out.Length; i++) 
             outp [i] = dcode1.unCode(_out [i]);
-        }
 
         return outp;
     }
@@ -89,9 +91,8 @@ public class DCode {
 
         for (int i = 0; i < _out.Length; i++) {
             outp [i] = new String [_out [i].Length] [];
-            for (int j = 0; j < _out [i].Length; j++) {
+            for (int j = 0; j < _out [i].Length; j++)
                 outp [i] [j] = unCode(_out [i] [j]);
-            }
         }
 
         return outp;
@@ -160,9 +161,8 @@ public class DCode {
     private String enCode(DCode dcode, String [] inp){ // Unidimencional
         String outp = "" + dcode.open;
 
-        for(int i = 0; i < inp.Length; i++){
+        for(int i = 0; i < inp.Length; i++)
             outp = outp + inp[i] + dcode.space;
-        }
 
         outp = outp + dcode.close;
 
@@ -172,9 +172,8 @@ public class DCode {
     private String enCode(DCode dcode1, DCode dcode2, String [][] inp){ // Bidimencional
         String outp = "" + dcode1.open;
 
-        for(int i = 0; i < inp.Length; i++){
+        for(int i = 0; i < inp.Length; i++)
             outp = outp + enCode(dcode2, inp[i]) + dcode1.space;
-        }
 
         outp = outp + dcode1.close;
 
@@ -184,9 +183,8 @@ public class DCode {
     private String enCode(DCode dcode1, DCode dcode2, DCode dcode3, String [][][] inp){ // Tridimencional
         String outp = "" + dcode1.open;
 
-        for(int i = 0; i < inp.Length; i++){
+        for(int i = 0; i < inp.Length; i++)
             outp = outp + enCode(dcode2, dcode3, inp[i]) + dcode1.space;
-        }
 
         outp = outp + dcode1.close;
 
@@ -278,6 +276,7 @@ public class DCode {
         String [] datas = new DCode(DATAs).unCode(inp);
         String [] array = new DCode(ARRAY).unCode(inp);
         String [] file = new DCode(FILE).unCode(inp);
+        String [] small = new DCode(SMALL).unCode(inp);
         
         if(normal.Length > 0)
             return NORMAL;
@@ -290,7 +289,9 @@ public class DCode {
         else
         if(file.Length > 0)
             return FILE;
-        
+        else
+        if(small.Length > 0)
+            return SMALL;
         return NORMAL;
     }
 

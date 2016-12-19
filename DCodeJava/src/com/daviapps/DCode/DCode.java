@@ -77,9 +77,8 @@ public class DCode {
         String [] _out = unCode(in);
         String [][] out = new String[_out.length][];
 
-        for(int i = 0; i < _out.length; i++){
+        for(int i = 0; i < _out.length; i++)
             out[i] = dcode1.unCode(_out[i]);
-        }
 
         return out;
     }
@@ -90,9 +89,8 @@ public class DCode {
 
         for(int i = 0; i < _out.length; i++){
             out[i] = new String[_out[i].length][];
-            for(int j = 0; j < _out[i].length; j++){
+            for(int j = 0; j < _out[i].length; j++)
                 out[i][j] = unCode(_out[i][j]);
-            }
         }
 
         return out;
@@ -141,9 +139,8 @@ public class DCode {
     protected String enCode(DCode dcode, String [] in){ // Unidimencional
         String out = "" + dcode.open;
 
-        for(int i = 0; i < in.length; i++){
+        for(int i = 0; i < in.length; i++)
             out = out + in[i] + dcode.space;
-        }
 
         out = out + dcode.close;
 
@@ -153,9 +150,8 @@ public class DCode {
     protected String enCode(DCode dcode1, DCode dcode2, String [][] in){ // Bidimencional
         String out = "" + dcode1.open;
 
-        for(int i = 0; i < in.length; i++){
+        for(int i = 0; i < in.length; i++)
             out = out + enCode(dcode2, in[i]) + dcode1.space;
-        }
 
         out = out + dcode1.close;
 
@@ -166,9 +162,8 @@ public class DCode {
     protected String enCode(DCode dcode1, DCode dcode2, DCode dcode3, String [][][] in){ // Tridimencional
         String out = "" + dcode1.open;
 
-        for(int i = 0; i < in.length; i++){
+        for(int i = 0; i < in.length; i++)
             out = out + enCode(dcode2, dcode3, in[i]) + dcode1.space;
-        }
 
         out = out + dcode1.close;
 
