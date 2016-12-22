@@ -252,7 +252,7 @@ public class DCodeFile {
     }
 
     override
-    public String toString() {
+    public String ToString() {
         if(this.getStatusKey() == DCodeFile.ALRIGHT)
             return dcode.enCode(new String[] {this.getEncodeType(), this.getTitle(), this.getPassWd(), this.getText()});
         else

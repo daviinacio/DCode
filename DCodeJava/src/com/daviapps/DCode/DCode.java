@@ -43,9 +43,11 @@ public class DCode {
         String [] out = new String[lenght(in)];
         char [] _in = in.toCharArray();
         String word = "";
-        int opend = 0;
-
-        int x = 0;
+        boolean noOpen = DCode.countNum(in, open) < 1;
+        boolean noClose = DCode.countNum(in, close) < 1;
+        
+        int opend = 0, x = 0;
+        
         for(int i = 0; i < _in.length; i++){
 
             if(_in[i] == open){
@@ -56,7 +58,13 @@ public class DCode {
                 if(opend > 1){
                     word = word + _in[i];
                     continue;
-                }
+                } else
+                if(opend < 1 && !noOpen)
+                    continue;
+                else
+                if(opend < 0 && !noClose)
+                    continue;
+                
                 out[x] = word;
                 x++;
                 word = "";
@@ -65,7 +73,7 @@ public class DCode {
                 if(opend > 1) word = word + _in[i];
                 opend--;
             } else{
-                if(_in[i] == '\r' || opend < 1) continue;
+                if(_in[i] == '\r' || (opend < 1 && !noOpen) || (opend < 0 && !noClose)) continue;
                 word = word + _in[i];
             }
         }
@@ -173,6 +181,8 @@ public class DCode {
     public int lenght(String in){
         int out = 0;
         char [] _in = in.toCharArray();
+        boolean noOpen = DCode.countNum(in, open) < 1;
+        boolean noClose = DCode.countNum(in, close) < 1;
         int opend = 0;
 
         for(int i = 0; i < _in.length; i++){
@@ -183,7 +193,12 @@ public class DCode {
             if(_in[i] == space){
                 if(opend > 1){
                     continue;
-                }
+                } else
+                if(opend < 1 && !noOpen)
+                    continue;
+                else
+                if(opend < 0 && !noClose)
+                    continue;
                 out++;
             } else
             if(_in[i] == close){
@@ -215,7 +230,19 @@ public class DCode {
     // Getters and Setters
     
     public int getMode(){ // To use this methods, the string most be some itens
-        return DCode.getMode(this.enCode(new String[] {"Dcode", ""}));
+        return DCode.getMode(this.enCode(new String[] {"Dcode"}));
+    }
+
+    public char getOpen() {
+        return open;
+    }
+
+    public char getSpace() {
+        return space;
+    }
+
+    public char getClose() {
+        return close;
     }
     
     // Internal methods
@@ -228,26 +255,22 @@ public class DCode {
     // Static methods
     
     public static int getMode(String in){ // To use this methods, the string most be some itens
-        String [] normal = new DCode(NORMAL).unCode(in);
-        String [] datas = new DCode(DATAs).unCode(in);
-        String [] array = new DCode(ARRAY).unCode(in);
-        String [] file = new DCode(FILE).unCode(in);
-        String [] small = new DCode(SMALL).unCode(in);
+        char [] _in = in.toCharArray();
+        DCode [] dCodes ={
+            new DCode(NORMAL), new DCode(DATAs), new DCode(ARRAY),
+            new DCode(FILE), new DCode(SMALL)
+        };
         
-        if(normal.length > 0)
-            return NORMAL;
-        else
-        if(datas.length > 0)
-            return DATAs;
-        else
-        if(array.length > 0)
-            return ARRAY;
-        else
-        if(file.length > 0)
-            return FILE;
-        else
-        if(small.length > 0)
-            return SMALL;
+        for (int i = (_in.length -1); i >= 0; i--) {
+            //System.out.println("i" + i + " - " + _in[i]);
+            for (int j = 0; j < dCodes.length; j++) {
+                //System.out.println("    j" + j + " - " + "c: " + dCodes[j].getClose()+ ", s: " + dCodes[j].getSpace());
+                if(_in[i] == dCodes[j].getClose()) // Find last close
+                    return j;
+                if(_in[i] == dCodes[j].getSpace()) // Find last space
+                    return j;
+            }
+        }
         
         return UNKNOWN;
     }
@@ -273,8 +296,7 @@ public class DCode {
 
         return out;
     }
-
-    @Deprecated
+    
     public static int countNum(String in, char c){
         int out = 0;
         char [] _in = in.toCharArray();

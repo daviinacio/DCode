@@ -47,7 +47,7 @@ public class DCodeFile {
         
         this.dcode = new DCode(DCode.FILE);
         
-        this.getStatusKey();
+        //this.getStatusKey();
         
         if(this.getStatusKey() == DCodeFile.OTHERENCODER) // Set DCode mode to mode of file
             if(DCode.getMode(this.getFileText()) != DCode.UNKNOWN) // If isn't unknown mode
