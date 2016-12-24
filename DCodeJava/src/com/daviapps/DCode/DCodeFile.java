@@ -1,6 +1,7 @@
-package com.daviapps.DCode;
+package com.daviapps.dcode;
 
 import android.os.Environment;
+import com.daviapps.ccode.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,8 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Davi
@@ -18,6 +17,7 @@ import java.util.logging.Logger;
 public class DCodeFile {
     //protected final DCode dcode = new DCode('{', '_', '}');
     protected DCode dcode;
+    protected CCode ccode;
     
     // Private variables
     protected File path, file;
@@ -32,20 +32,33 @@ public class DCodeFile {
     private String passWd = "";
     
     // Constructors
+    
+    public DCodeFile(String pathName, String fileName, CCode ccode){
+        this(new File(Environment.getExternalStorageDirectory(), "/" + pathName + "/" + fileName), ccode);
+    }
 
     public DCodeFile(String pathName, String fileName){
         this(new File(Environment.getExternalStorageDirectory(), "/" + pathName + "/" + fileName));
+    }
+    
+    public DCodeFile(String filePath, CCode ccode){
+        this(new File(filePath), ccode);
     }
 
     public DCodeFile(String filePath){
         this(new File(filePath));
     }
-
+    
     public DCodeFile(File file){
+        this(file, new CCode());
+    }
+
+    public DCodeFile(File file, CCode ccode){
         this.file = file;
         this.path = file.getParentFile();
         
         this.dcode = new DCode(DCode.FILE);
+        this.ccode = ccode;
         
         //this.getStatusKey();
         
@@ -70,12 +83,20 @@ public class DCodeFile {
     
     // Methods
     
+    public void overwriteFile(){
+        this.setFileText("");
+        createBaseFile();
+    }
+    
     public void createFile(){
         if(this.getStatusKey() == DCodeFile.NOTFOUNDED){
             try { file.createNewFile(); } catch (IOException ex) {}
             if(file.exists())
                 createBaseFile();
-        }
+            else
+                System.err.println("Create file error.");
+        } else
+            System.err.println("File exists.");
     }
     
     public void createBaseFile(){
@@ -84,7 +105,8 @@ public class DCodeFile {
             this.setTitle(file.getName());
             this.setEncodeType("DCode");
             this.setText("");
-        }
+        } else
+            System.err.println("The file content will be losted.");
     }
 
     public boolean pathExists(){
@@ -102,10 +124,13 @@ public class DCodeFile {
     // File encoders and decoders
 
     public void setText(String text){
-        if(statusKey != ERROR){
-            setFileText(dcode.enCode(new String[] {
+        if(statusKey == ALRIGHT){
+            setFileText(ccode.enCrype(dcode.enCode(new String[] {
                 encodeType, title, passWd, text
-            }));
+            })));
+        } else{
+            System.err.println("You can't writes this file.");
+            System.err.println("This file contains unknown encode or is encrypted.");
         }
     }
 
@@ -113,10 +138,15 @@ public class DCodeFile {
         if(statusKey == ALRIGHT){
             String [] props = null;
             if(!getFileText().equals("")){
-                props = dcode.unCode(getFileText());
-                this.encodeType = props[0];
-                this.title = props[1];
-                this.passWd = props[2];
+                props = dcode.unCode(ccode.unCrype(getFileText()));
+                if(props.length >= 4){
+                    this.encodeType = props[0];
+                    this.title = props[1];
+                    this.passWd = props[2];
+                } else{
+                    statusKey = ERROR;
+                    return "ERROR";
+                }
             }
             else{
                 this.statusKey = EMPTY;
@@ -154,10 +184,10 @@ public class DCodeFile {
             fileOutputStream.close();
             System.out.println("Arquivo salvo");
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             System.out.println("Arquivo não encontrado");
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             System.out.println("Error, arquivo não salvo");
         }
     }
@@ -179,10 +209,10 @@ public class DCodeFile {
             FileText = stringBuffer.toString();
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             System.out.println("Arquivo não encontrado");
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             System.out.println("Erro, arquivo não carregado");
         }
 
@@ -194,11 +224,11 @@ public class DCodeFile {
     public int getStatusKey(){
         if (file.exists()) {
             if (!this.getFileText().equals("")) { // Alright
-                if (dcode.unCode(getFileText()).length >= 4) {
+                if (dcode.unCode(ccode.unCrype(getFileText())).length >= 4) {
                     statusKey = ALRIGHT;
                     this.getText();
                 } else
-                if(DCode.getMode(this.getFileText()) != dcode.getMode()){ // Isn,t currently dcode mode
+                if(DCode.getMode(ccode.unCrype(getFileText())) != dcode.getMode()){ // Isn,t currently dcode mode
                     statusKey = OTHERENCODER;
                 }else // Last vertion encoder
                     statusKey = ERROR;
@@ -319,7 +349,10 @@ public class DCodeFile {
         if(this.getStatusKey() == DCodeFile.NOTFOUNDED)
             return "NOT FOUNDED";
         else
-        if(DCode.getMode(this.getFileText()) == DCode.UNKNOWN)
+        if(this.getStatusKey() == DCodeFile.OTHERENCODER)
+            return "UNKNOWN MODE";
+        else
+        if(DCode.getMode(ccode.unCrype(this.getFileText())) == DCode.UNKNOWN)
             return "UNKNOWN MODE";
         return null;
     }

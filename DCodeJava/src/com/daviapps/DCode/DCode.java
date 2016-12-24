@@ -1,4 +1,4 @@
-package com.daviapps.DCode;
+package com.daviapps.dcode;
 
 /**
  * @author Davi
