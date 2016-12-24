@@ -1,6 +1,8 @@
-package com.daviapps.DCodePreferences;
+package com.daviapps.dcode.preferences;
 
-import com.daviapps.DCode.*;
+import com.daviapps.dcode.DCode;
+import com.daviapps.dcode.Datas;
+import com.daviapps.dcode.DCodeFile;
 import java.io.File;
 
 /**

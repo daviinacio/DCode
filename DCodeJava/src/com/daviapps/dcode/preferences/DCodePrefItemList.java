@@ -1,6 +1,6 @@
-package com.daviapps.DCodePreferences;
+package com.daviapps.dcode.preferences;
 
-import com.daviapps.DCode.*;
+import com.daviapps.dcode.DCode;
 import java.util.ArrayList;
 import java.util.List;
 
