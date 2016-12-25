@@ -59,7 +59,14 @@ public class DCodePreferences {
     // Loader methods
     
     public void save(){
-        file.setText(list.toString());
+        if(file.getStatusKey() == DCodeFile.EMPTY)
+            file.createBaseFile();
+        else
+        if(file.getStatusKey() == DCodeFile.NOTFOUNDED)
+            file.createFile();
+        
+        if(file.getStatusKey() == DCodeFile.ALRIGHT)
+            file.setText(list.toString());
     }
     
     // Methods

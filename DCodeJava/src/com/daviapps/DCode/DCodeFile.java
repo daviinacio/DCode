@@ -90,6 +90,8 @@ public class DCodeFile {
     
     public void createFile(){
         if(this.getStatusKey() == DCodeFile.NOTFOUNDED){
+            if(!file.getParentFile().exists())
+                file.getParentFile().mkdirs();
             try { file.createNewFile(); } catch (IOException ex) {}
             if(file.exists())
                 createBaseFile();
