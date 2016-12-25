@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Davi
+ * @author Davi, 11/11/2016
  */
 
 public class DCodePrefItemList {

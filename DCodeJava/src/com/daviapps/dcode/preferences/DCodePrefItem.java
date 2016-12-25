@@ -3,7 +3,7 @@ package com.daviapps.dcode.preferences;
 import com.daviapps.dcode.*;
 
 /**
- * @author Davi
+ * @author Davi, 11/11/2016
  */
 
 public class DCodePrefItem {

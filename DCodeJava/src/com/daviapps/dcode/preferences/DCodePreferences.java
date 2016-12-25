@@ -6,7 +6,7 @@ import com.daviapps.dcode.DCodeFile;
 import java.io.File;
 
 /**
- * @author Davi
+ * @author Davi, 11/11/2016
  */
 
 public class DCodePreferences {
