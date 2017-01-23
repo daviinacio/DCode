@@ -161,6 +161,10 @@ public class DCodeFile {
         
         return "ERROR LOAD";
     }
+    
+    public void statusKeyAction(dFAction action){
+        action.setDFile(this);
+    }
 
     // File loaders
 

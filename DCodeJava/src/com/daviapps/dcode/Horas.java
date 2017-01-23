@@ -28,9 +28,9 @@ public class Horas {
     public Horas(String props){
         String [] _props = dcode.unCode(props);
         if(_props.length >= 3){
-            this.hours = Integer.getInteger(_props[0]);
-            this.minutes = Integer.getInteger(_props[1]);
-            this.seconds = Integer.getInteger(_props[2]);
+            this.hours = Integer.parseInt(_props[0]);
+            this.minutes = Integer.parseInt(_props[1]);
+            this.seconds = Integer.parseInt(_props[2]);
         }
     }
 
