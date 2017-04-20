@@ -238,6 +238,18 @@ public class DCode {
         return DCode.getMode(this.enCode(new String[] {"Dcode", ""}));
     }
 
+    public char getOpen() {
+        return open;
+    }
+
+    public char getSpace() {
+        return space;
+    }
+
+    public char getClose() {
+        return close;
+    }
+
     // String methods
 
     private String [][] convertString(String [,] inp){

@@ -103,6 +103,20 @@ public class DCodePreferences {
     
     // Getters, Setters and Adders
     
+    // Index Getters
+    
+    public DCodePrefItem getByIndex(int i){
+        return list.getList().get(i);
+    }
+    
+    public String getValueByIndex(int i){
+        return list.getList().get(i).getValue();
+    }
+    
+    public int getSize(){
+        return list.getList().size();
+    }
+    
     // Adders
     
     public boolean add(String key, int value){ // AddInteger

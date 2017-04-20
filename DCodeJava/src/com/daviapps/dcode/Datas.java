@@ -27,7 +27,7 @@ public class Datas {
     public Datas(){
         //this(0, 0, "1999");
         this.setToday();
-        this.time = new Horas();
+        //this.time = new Horas();
     }
 
     public Datas(String properties){
@@ -43,7 +43,7 @@ public class Datas {
     }
     
     public Datas(int day, int month, String year){
-        this.day = day; this.month = month; this.year = year; this.time = null;
+        this.day = day; this.month = month; this.year = year; //this.time = null;
     }
     
     public Datas(int day, int month, String year, int hours, int minutes, int seconds){

@@ -50,7 +50,7 @@ public class DCodeFile {
     }
     
     public DCodeFile(File file){
-        this(file, new CCode());
+        this(file, null);
     }
 
     public DCodeFile(File file, CCode ccode){
@@ -126,10 +126,9 @@ public class DCodeFile {
     // File encoders and decoders
 
     public void setText(String text){
+        String _text = dcode.enCode(new String[] { encodeType, title, passWd, text });
         if(statusKey == ALRIGHT){
-            setFileText(ccode.enCrype(dcode.enCode(new String[] {
-                encodeType, title, passWd, text
-            })));
+            setFileText(ccode == null ? _text : ccode.enCrype(_text));
         } else{
             System.err.println("You can't writes this file.");
             System.err.println("This file contains unknown encode or is encrypted.");
@@ -140,7 +139,8 @@ public class DCodeFile {
         if(statusKey == ALRIGHT){
             String [] props = null;
             if(!getFileText().equals("")){
-                props = dcode.unCode(ccode.unCrype(getFileText()));
+                String text = ccode == null ? getFileText() : ccode.unCrype(getFileText());
+                props = dcode.unCode(text);
                 if(props.length >= 4){
                     this.encodeType = props[0];
                     this.title = props[1];
@@ -197,8 +197,12 @@ public class DCodeFile {
             System.out.println("Error, arquivo não salvo");
         }
     }
-
+    
     protected String getFileText(){
+        return DCodeFile.getFileText(this.file);
+    }
+
+    protected static String getFileText(File file){
         String FileText = new String();
         String Message;
 
@@ -229,12 +233,14 @@ public class DCodeFile {
     
     public int getStatusKey(){
         if (file.exists()) {
+            //if(!isDCode(this)){ statusKey = ERROR; return statusKey; } else // Return error if is not a DCode file
             if (!this.getFileText().equals("")) { // Alright
-                if (dcode.unCode(ccode.unCrype(getFileText())).length >= 4) {
+                String text = ccode == null ? getFileText() : ccode.unCrype(getFileText());
+                if (dcode.unCode(text).length >= 4) {
                     statusKey = ALRIGHT;
                     this.getText();
                 } else
-                if(DCode.getMode(ccode.unCrype(getFileText())) != dcode.getMode()){ // Isn,t currently dcode mode
+                if(DCode.getMode(text) != dcode.getMode()){ // Isn,t currently dcode mode
                     statusKey = OTHERENCODER;
                 }else // Last vertion encoder
                     statusKey = ERROR;
@@ -301,6 +307,24 @@ public class DCodeFile {
     }
 
     // static methods
+    
+    public static boolean isDCode(File file){
+        return DCodeFile.isDCode(file, new DCode(DCode.NORMAL));
+    }
+    
+    public static boolean isDCode(File file, DCode dcode){
+        char [] text = DCodeFile.getFileText(file).toCharArray();
+        int opens = 0, spaces = 0, closes = 0;
+        for (int i = 0; i < (text.length <= 20 ? 20 : text.length); i++){
+            if(text[i] == dcode.getOpen())
+                opens++;
+            else if(text[i] == dcode.getSpace())
+                spaces++;
+            else if(text[i] == dcode.getClose())
+                closes++;
+        }
+        return (opens > 0) && (spaces >= 3);
+    }
 
     @Deprecated
     public static String getFileName(File file){
@@ -343,6 +367,7 @@ public class DCodeFile {
 
     @Override
     public String toString() {
+        String text = ccode.equals(null) ? getFileText() : ccode.unCrype(getFileText());
         if(this.getStatusKey() == DCodeFile.ALRIGHT)
             return dcode.enCode(new String[] {this.getEncodeType(), this.getTitle(), this.getPassWd(), this.getText()});
         else
@@ -358,7 +383,7 @@ public class DCodeFile {
         if(this.getStatusKey() == DCodeFile.OTHERENCODER)
             return "UNKNOWN MODE";
         else
-        if(DCode.getMode(ccode.unCrype(this.getFileText())) == DCode.UNKNOWN)
+        if(DCode.getMode(text) == DCode.UNKNOWN)
             return "UNKNOWN MODE";
         return null;
     }

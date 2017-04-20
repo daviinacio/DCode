@@ -12,9 +12,11 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Davi/Documents/GitHub/DCode/DCodeJava/src/com/daviapps/dcode/dFAction.java</file>
+            <file>file:/C:/Users/Davi/Documents/GitHub/DCode/DCodeJava/src/com/daviapps/dcode/preferences/DCodePreferences.java</file>
+            <file>file:/C:/Users/Davi/Documents/GitHub/DCode/DCodeJava/src/com/daviapps/dcode/preferences/DCodePrefItemList.java</file>
+            <file>file:/C:/Users/Davi/Documents/GitHub/DCode/DCodeJava/src/com/daviapps/dcode/DCode.java</file>
+            <file>file:/C:/Users/Davi/Documents/GitHub/DCode/DCodeJava/src/com/daviapps/dcode/DCodeFile.java</file>
             <file>file:/C:/Users/Davi/Documents/GitHub/DCode/DCodeJava/src/com/daviapps/dcode/Datas.java</file>
-            <file>file:/C:/Users/Davi/Documents/GitHub/DCode/DCodeJava/src/com/daviapps/dcode/Horas.java</file>
         </group>
     </open-files>
 </project-private>
