@@ -42,6 +42,7 @@
     <Compile Include="DCode.cs" />
     <Compile Include="Datas.cs" />
     <Compile Include="DCodeFile.cs" />
+    <Compile Include="Horas.cs" />
     <Compile Include="Preferences\DCodePreferences.cs" />
     <Compile Include="Preferences\DCodePrefItem.cs" />
     <Compile Include="Preferences\DCodePrefItemList.cs" />

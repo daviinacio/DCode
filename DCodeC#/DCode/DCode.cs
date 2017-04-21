@@ -42,33 +42,41 @@ public class DCode {
     // enCode and unCode
 
     public String [] unCode(String inp) {
-        String [] outp = new String [this.lenght(inp)];
+        String [] outp = new String[lenght(inp)];
         char [] _in = inp.ToCharArray();
         String word = "";
-        int opend = 0;
+        bool noOpen = DCode.countNum(inp, open) < 1;
+        bool noClose = DCode.countNum(inp, close) < 1;
+        
+        int opend = 0, x = 0;
+        
+        for(int i = 0; i < _in.Length; i++){
 
-        int x = 0;
-        for (int i = 0; i < _in.Length; i++) {
-
-            if (_in [i] == open) {
+            if(_in[i] == open){
                 opend++;
-                if (opend > 1) word = word + _in [i];
+                if(opend > 1) word = word + _in[i];
             } else
-            if (_in [i] == space) {
-                if (opend > 1) {
-                    word = word + _in [i];
+            if(_in[i] == space){
+                if(opend > 1){
+                    word = word + _in[i];
                     continue;
-                }
-                outp [x] = word;
+                } else
+                if(opend < 1 && !noOpen)
+                    continue;
+                else
+                if(opend < 0 && !noClose)
+                    continue;
+                
+                outp[x] = word;
                 x++;
                 word = "";
             } else
-            if (_in [i] == close) {
-                if (opend > 1) word = word + _in [i];
+            if(_in[i] == close){
+                if(opend > 1) word = word + _in[i];
                 opend--;
-            } else {
-                if (_in [i] == '\r' || opend < 1) continue;
-                word = word + _in [i];
+            } else{
+                if(_in[i] == '\r' || (opend < 1 && !noOpen) || (opend < 0 && !noClose)) continue;
+                word = word + _in[i];
             }
         }
 
@@ -284,27 +292,24 @@ public class DCode {
     // Static methods
 
     public static int getMode(String inp){ // To use this methods, the string most be some itens
-        String [] normal = new DCode(NORMAL).unCode(inp);
-        String [] datas = new DCode(DATAs).unCode(inp);
-        String [] array = new DCode(ARRAY).unCode(inp);
-        String [] file = new DCode(FILE).unCode(inp);
-        String [] small = new DCode(SMALL).unCode(inp);
+        char [] _in = inp.ToCharArray();
+        DCode [] dCodes ={
+            new DCode(NORMAL), new DCode(DATAs), new DCode(ARRAY),
+            new DCode(FILE), new DCode(SMALL)
+        };
         
-        if(normal.Length > 0)
-            return NORMAL;
-        else
-        if(datas.Length > 0)
-            return DATAs;
-        else
-        if(array.Length > 0)
-            return ARRAY;
-        else
-        if(file.Length > 0)
-            return FILE;
-        else
-        if(small.Length > 0)
-            return SMALL;
-        return NORMAL;
+        for (int i = (_in.Length -1); i >= 0; i--) {
+            //System.out.println("i" + i + " - " + _in[i]);
+            for (int j = 0; j < dCodes.Length; j++) {
+                //System.out.println("    j" + j + " - " + "c: " + dCodes[j].getClose()+ ", s: " + dCodes[j].getSpace());
+                if(_in[i] == dCodes[j].getClose()) // Find last close
+                    return j;
+                if(_in[i] == dCodes[j].getSpace()) // Find last space
+                    return j;
+            }
+        }
+        
+        return UNKNOWN;
     }
 
     //@Deprecated

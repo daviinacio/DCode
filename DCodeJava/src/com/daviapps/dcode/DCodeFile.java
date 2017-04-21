@@ -309,21 +309,25 @@ public class DCodeFile {
     // static methods
     
     public static boolean isDCode(File file){
-        return DCodeFile.isDCode(file, new DCode(DCode.NORMAL));
+        return DCodeFile.isDCode(file, new DCode(DCode.FILE));
     }
     
     public static boolean isDCode(File file, DCode dcode){
         char [] text = DCodeFile.getFileText(file).toCharArray();
         int opens = 0, spaces = 0, closes = 0;
-        for (int i = 0; i < (text.length <= 20 ? 20 : text.length); i++){
+        for (int i = 0; i < (text.length >= 50 ? 50 : text.length); i++){
             if(text[i] == dcode.getOpen())
                 opens++;
             else if(text[i] == dcode.getSpace())
                 spaces++;
             else if(text[i] == dcode.getClose())
                 closes++;
+            
+            if(spaces >= 3)
+                return true;
         }
-        return (opens > 0) && (spaces >= 3);
+        return false;
+        //return (opens == closes) && (spaces >= 3);
     }
 
     @Deprecated

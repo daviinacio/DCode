@@ -11,6 +11,7 @@ using System.IO;
 
 public class DCodeFile {
     private DCode dcode;
+    //protected CCode ccode;
     
     // Private variables
     private String path, file;
@@ -55,6 +56,11 @@ public class DCodeFile {
     
     // Methods
 
+    public void overwriteFile() {
+        this.setFileText("");
+        createBaseFile();
+    }
+
     public void createFile() {
         if (this.getStatusKey() == DCodeFile.NOTFOUNDED) {
             this.setFileText("");
@@ -85,32 +91,39 @@ public class DCodeFile {
     // File encoders and decoders
 
     public void setText(String text){
-        if(statusKey != ERROR){
-            setFileText(dcode.enCodeI(new String[] {
-                encodeType, title, passWd, text
-            }));
+        String _text = dcode.enCode(new String [] { encodeType, title, passWd, text });
+        if (statusKey == ALRIGHT) {
+            setFileText(/*ccode == null ?*/ _text /*: ccode.enCrype(_text)*/);
+        } else {
+            Console.WriteLine("You can't writes this file.");
+            Console.WriteLine("This file contains unknown encode or is encrypted.");
         }
     }
 
     public String getText(){
-        if(statusKey == ALRIGHT){
+        if (statusKey == ALRIGHT) {
             String [] props = null;
-            if(!getFileText().Equals("")){
-                props = dcode.unCode(getFileText());
-                this.encodeType = props[0];
-                this.title = props[1];
-                this.passWd = props[2];
-            }
-            else{
+            if (!getFileText().Equals("")) {
+                String text = /*ccode == null ?*/ getFileText() /*: ccode.unCrype(getFileText())*/;
+                props = dcode.unCode(text);
+                if (props.Length >= 4) {
+                    this.encodeType = props [0];
+                    this.title = props [1];
+                    this.passWd = props [2];
+                } else {
+                    statusKey = ERROR;
+                    return "ERROR";
+                }
+            } else {
                 this.statusKey = EMPTY;
             }
 
-            return props[3];
+            return props [3];
         } else
-        if (statusKey == NOTFOUNDED)
-            return "NOT FOUNDED";
+            if (statusKey == NOTFOUNDED)
+                return "NOT FOUNDED";
 
-        return "Error LOAD";
+        return "ERROR LOAD";
     }
 
     // File loaders
@@ -127,7 +140,11 @@ public class DCodeFile {
         //File.WriteAllText(file, fileText);
     }
 
-    private String getFileText(){
+    protected String getFileText() {
+        return DCodeFile.getFileText(this.file);
+    }
+
+    private static String getFileText(String file){
         String fileText = "";
 
         try {   // Open the text file using a stream reader.
@@ -140,19 +157,13 @@ public class DCodeFile {
         }
 
         return fileText;
-        /*if (File.Exists(file)) {
-            return File.ReadAllText(file);
-        } else {
-            //File.Create(file);
-            File.CreateText(file);
-        }
-        return "";*/
     }
 
     // Getters and setters
 
     public int getStatusKey(){
         if (File.Exists(file)) {
+            //if(!isDCode(this)){ statusKey = ERROR; return statusKey; } else // Return error if is not a DCode file
             if (!this.getFileText().Equals("")) { // Alright
                 if (dcode.unCode(getFileText()).Length >= 4) {
                     statusKey = ALRIGHT;
@@ -166,9 +177,9 @@ public class DCodeFile {
             } else { // File empty
                 statusKey = EMPTY;
             }
-        } else {
+        } else
             statusKey = NOTFOUNDED;
-        }
+
         return statusKey;
     }
 
@@ -203,29 +214,57 @@ public class DCodeFile {
     
     // Internal methods
 
+    [System.Obsolete]
     public String getFileName() {
         return getFileName(file);
     }
-    
+
+    [System.Obsolete]
     public bool isDCodeExtention(){
         return isDCodeExtention(file);
     }
-    
+
+    [System.Obsolete]
     public String getLast4Chars(){
         return getLast4Chars(file);
     }
 
     // static methods
 
+    public static bool isDCode(String file) {
+        return DCodeFile.isDCode(file, new DCode(DCode.FILE));
+    }
+
+    public static bool isDCode(String file, DCode dcode) {
+        char [] text = DCodeFile.getFileText(file).ToCharArray();
+        int opens = 0, spaces = 0, closes = 0;
+        for (int i = 0; i < (text.Length >= 50 ? 50 : text.Length); i++) {
+            if (text [i] == dcode.getOpen())
+                opens++;
+            else if (text [i] == dcode.getSpace())
+                spaces++;
+            else if (text [i] == dcode.getClose())
+                closes++;
+
+            if (spaces >= 3)
+                return true;
+        }
+        return false;
+        //return (opens == closes) && (spaces >= 3);
+    }
+
+    [System.Obsolete]
     public static String getFileName(String file){
-        char [] name = Path.GetFileName(file).ToCharArray();
+        return Path.GetFileNameWithoutExtension(file);
+        /*char [] name = Path.GetFileName(file).ToCharArray();
         String outp = "";
         for(int i = 0; i < (name.Length - 6); i++){
             outp = outp + name[i];
         }
-        return outp;
+        return outp;*/
     }
 
+    [System.Obsolete("This method will be removed on version 1.2")]
     public static bool isDCodeExtention(String file){
         String last4chars = getLast4Chars(file);
         bool outp = (
@@ -238,6 +277,7 @@ public class DCodeFile {
         return outp;
     }
 
+    [System.Obsolete]
     public static String getLast4Chars(String file){
         char [] name = Path.GetFileName(file).ToCharArray();
         String last4chars = "";

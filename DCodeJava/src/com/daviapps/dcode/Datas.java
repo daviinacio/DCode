@@ -27,7 +27,7 @@ public class Datas {
     public Datas(){
         //this(0, 0, "1999");
         this.setToday();
-        //this.time = new Horas();
+        this.time = new Horas();
     }
 
     public Datas(String properties){
