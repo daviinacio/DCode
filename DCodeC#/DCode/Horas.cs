@@ -40,16 +40,30 @@ public class Horas {
     // Init methods
     
     private void initCalendar(){
-        calendar = DateTime.Today;
+        calendar = DateTime.Now;
     }
     
     // Methods
 
     public void setNow(){
         initCalendar();
-        this.hours = calendar.Hour;
+        this.hours = int.Parse(calendar.ToString("HH"));
         this.minutes = calendar.Minute;
         this.seconds = calendar.Second;
+    }
+
+    // Getters and Setters
+
+    public int getHours() {
+        return hours;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public int getSeconds() {
+        return seconds;
     }
     
     // Static methods
