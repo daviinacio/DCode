@@ -1,7 +1,7 @@
 package com.daviapps.dcode;
 
 import android.os.Environment;
-import com.daviapps.ccode.*;
+//import com.daviapps.ccode.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
 public class DCodeFile {
     //protected final DCode dcode = new DCode('{', '_', '}');
     protected DCode dcode;
-    protected CCode ccode;
+    //protected CCode ccode;
     
     // Private variables
     protected File path, file;
@@ -33,32 +33,32 @@ public class DCodeFile {
     
     // Constructors
     
-    public DCodeFile(String pathName, String fileName, CCode ccode){
-        this(new File(Environment.getExternalStorageDirectory(), "/" + pathName + "/" + fileName), ccode);
-    }
+//    public DCodeFile(String pathName, String fileName, CCode ccode){
+//        this(new File(Environment.getExternalStorageDirectory(), "/" + pathName + "/" + fileName), ccode);
+//    }
 
     public DCodeFile(String pathName, String fileName){
         this(new File(Environment.getExternalStorageDirectory(), "/" + pathName + "/" + fileName));
     }
     
-    public DCodeFile(String filePath, CCode ccode){
-        this(new File(filePath), ccode);
-    }
+//    public DCodeFile(String filePath, CCode ccode){
+//        this(new File(filePath), ccode);
+//    }
 
     public DCodeFile(String filePath){
         this(new File(filePath));
     }
     
-    public DCodeFile(File file){
-        this(file, null);
-    }
+//    public DCodeFile(File file){
+//        this(file, null);
+//    }
 
-    public DCodeFile(File file, CCode ccode){
+    public DCodeFile(File file/*, CCode ccode*/){
         this.file = file;
         this.path = file.getParentFile();
         
         this.dcode = new DCode(DCode.FILE);
-        this.ccode = ccode;
+//        this.ccode = ccode;
         
         //this.getStatusKey();
         
@@ -68,17 +68,19 @@ public class DCodeFile {
 
         if(statusKey == ERROR){
             this.setTitle("ERROR LOAD");
-            //this.setEncodeType("ERROR LOAD");
+            this.onError();
         } else
         if(statusKey == EMPTY){
             this.setTitle("EMPTY");
-            //this.setEncodeType("EMPTY");
-            //createBaseFile();
+            this.onEmpty();
         } else
         if(statusKey == NOTFOUNDED){
             this.setTitle("NOT FOUNDED");
-            this.setEncodeType("NOT FOUNDED");
+            this.onNotFound();
         }
+        
+        if(this.getStatusKey() == ALRIGHT)
+            this.onAlright();
     }
     
     // Methods
@@ -128,7 +130,7 @@ public class DCodeFile {
     public void setText(String text){
         String _text = dcode.enCode(new String[] { encodeType, title, passWd, text });
         if(statusKey == ALRIGHT){
-            setFileText(ccode == null ? _text : ccode.enCrype(_text));
+            setFileText(/*ccode == null ? */_text/* : ccode.enCrype(_text)*/);
         } else{
             System.err.println("You can't writes this file.");
             System.err.println("This file contains unknown encode or is encrypted.");
@@ -139,7 +141,7 @@ public class DCodeFile {
         if(statusKey == ALRIGHT){
             String [] props = null;
             if(!getFileText().equals("")){
-                String text = ccode == null ? getFileText() : ccode.unCrype(getFileText());
+                String text = /*ccode == null ? */getFileText()/* : ccode.unCrype(getFileText())*/;
                 props = dcode.unCode(text);
                 if(props.length >= 4){
                     this.encodeType = props[0];
@@ -235,7 +237,7 @@ public class DCodeFile {
         if (file.exists()) {
             //if(!isDCode(this)){ statusKey = ERROR; return statusKey; } else // Return error if is not a DCode file
             if (!this.getFileText().equals("")) { // Alright
-                String text = ccode == null ? getFileText() : ccode.unCrype(getFileText());
+                String text = /*ccode == null ? */getFileText()/* : ccode.unCrype(getFileText())*/;
                 if (dcode.unCode(text).length >= 4) {
                     statusKey = ALRIGHT;
                     this.getText();
@@ -289,21 +291,24 @@ public class DCodeFile {
         return path.listFiles();
     }
     
+    // External methods
+    
+    public void onAlright(){}
+    
+    public void onError(){}
+    
+    public void onNotFound(){
+        this.createFile();
+    }
+    
+    public void onEmpty(){
+        this.createBaseFile();
+    }
+    
     // Internal methods
     
-    @Deprecated
-    public String getFileName(){
-        return getFileName(file);
-    }
-    
-    @Deprecated
-    public boolean isDCodeExtention(){
-        return isDCodeExtention(file);
-    }
-    
-    @Deprecated
-    public String getLast4Chars(){
-        return getLast4Chars(file);
+    public boolean isDCode(){
+        return DCodeFile.isDCode(file);
     }
 
     // static methods
@@ -329,49 +334,12 @@ public class DCodeFile {
         return false;
         //return (opens == closes) && (spaces >= 3);
     }
-
-    @Deprecated
-    public static String getFileName(File file){
-        char [] name = file.getName().toCharArray();
-        String out = "";
-        for(int i = 0; i < (name.length - 6); i++){
-            out = out + name[i];
-        }
-        return out;
-    }
-
-    @Deprecated
-    public static boolean isDCodeExtention(File file){
-        String last4chars = getLast4Chars(file);
-        boolean out = (
-                last4chars.equals("DCode") ||
-                last4chars.equals("dcode") ||
-                last4chars.equals("Dcode") ||
-                last4chars.equals("DCODE") 
-                ) && !file.isDirectory();
-
-        return out;
-    }
-
-    @Deprecated
-    public static String getLast4Chars(File file){
-        char [] name = file.getName().toCharArray();
-        String last4chars = "";
-
-        if(name.length >= 5){
-            for(int i = name.length - 5; i < name.length; i++){
-                last4chars = last4chars + name[i];
-            }
-        }
-
-        return last4chars;
-    }
     
     // Override methods
 
     @Override
     public String toString() {
-        String text = ccode.equals(null) ? getFileText() : ccode.unCrype(getFileText());
+        String text = /*ccode == null ? */getFileText()/* : ccode.unCrype(getFileText())*/;
         if(this.getStatusKey() == DCodeFile.ALRIGHT)
             return dcode.enCode(new String[] {this.getEncodeType(), this.getTitle(), this.getPassWd(), this.getText()});
         else
@@ -391,6 +359,4 @@ public class DCodeFile {
             return "UNKNOWN MODE";
         return null;
     }
-    
-    
 }

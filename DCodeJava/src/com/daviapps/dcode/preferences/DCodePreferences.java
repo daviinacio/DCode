@@ -32,28 +32,34 @@ public class DCodePreferences {
     
     // Main constructor
     public DCodePreferences(DCodeFile file){
-        this.file = file;
-        
-        if(file.getStatusKey() == DCodeFile.EMPTY){
-            System.err.println("File empty, base file ceated");
-            file.createBaseFile();
-        } else
-        if(file.getStatusKey() == DCodeFile.NOTFOUNDED){
-            System.err.println("File not founded, file created");
-            file.createFile();
-        } else
-        if(file.getStatusKey() == DCodeFile.ERROR){
-            System.err.println("File error load");
-        } else
-        if(file.getStatusKey() == DCodeFile.OTHERENCODER) {
-            System.err.println("File with other encode mode");
-        }
-        
-        // Second verification
-        if(file.getStatusKey() == DCodeFile.ALRIGHT){
-            System.out.println("Preference: ALRIGHT");
-            list = new DCodePrefItemList(dcode, file.getText());
-        }
+        this.file = new DCodeFile(file.getFile()){
+            @Override
+            public void onAlright() {
+                System.out.println("Preference: ALRIGHT");
+                list = new DCodePrefItemList(DCodePreferences.this.dcode, this.getText());
+                DCodePreferences.this.onAlright();
+            }
+
+            @Override
+            public void onError() {
+                System.err.println("Preference: File error load");
+                DCodePreferences.this.onError();
+            }
+
+            @Override
+            public void onEmpty() {
+                System.err.println("Preference: File empty, base file ceated");
+                super.onEmpty();
+                DCodePreferences.this.onError();
+            }
+
+            @Override
+            public void onNotFound() {
+                System.err.println("File not founded, file created");
+                super.onNotFound();
+                DCodePreferences.this.onError();
+            }
+        };
     }
     
     // Loader methods
@@ -65,8 +71,10 @@ public class DCodePreferences {
         if(file.getStatusKey() == DCodeFile.NOTFOUNDED)
             file.createFile();
         
-        if(file.getStatusKey() == DCodeFile.ALRIGHT)
+        if(file.getStatusKey() == DCodeFile.ALRIGHT){
             file.setText(list.toString());
+            this.onSave();
+        }
     }
     
     // Methods
@@ -399,8 +407,15 @@ public class DCodePreferences {
         }
     }
     
+    // External methods
+    
+    public void onAlright(){}
+    
+    public void onError(){}
+    
+    public void onSave(){}
+    
     // Override methods
-
     @Override
     public String toString() {
         return list.toString();
