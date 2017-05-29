@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace DCodePreferencesConsole {
 
         private static DCode dcode = new DCode('.', ' ', ';');
         private static DCodePreferences dPrefs;
+        private static String diretory = "C:/";
 
         static void Main(string[] args) {
             clearConsole();
@@ -25,6 +27,9 @@ namespace DCodePreferencesConsole {
                     case "remove": remove(commands); break;
 
                     case "file": file(commands); break;
+
+                    case "dir": dir(); break;
+                    case "cd": cd(); break;
 
                     case "clear": clearConsole(); break;
 
@@ -46,6 +51,14 @@ namespace DCodePreferencesConsole {
         }
 
         private static void file(String[] cmd) {
+
+        }
+
+        private static void dir() {
+            //String [] folders = Path.
+        }
+
+        private static void cd() {
 
         }
 
