@@ -1,0 +1,1 @@
+C:\Users\Davi\Documents\GitHub\DCode\DCodePrefsConsole_C#\DCodePreferencesConsole\DCodePreferencesConsole\bin\Debug\DCodePreferencesConsole.exe.config
