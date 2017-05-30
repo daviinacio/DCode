@@ -6,18 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DCodePreferencesConsole {
+
     class Program {
-        public static int EN = 0, PTBR = 1;
-        public static int lang = EN;
 
         private static DCode dcode = new DCode('.', ' ', ';');
         private static DCodePreferences dPrefs;
         private static String diretory = "C:/";
 
+        public static bool running = true;
+
         static void Main(string[] args) {
             clearConsole();
 
-            while (true) {
+            STR.lang = STR.EN;
+
+            while (running) {
                 Console.Write("> ");
                 String[] commands = dcode.unCode(dcode.getOpen() + Console.ReadLine() + dcode.getSpace());
 
@@ -29,9 +32,12 @@ namespace DCodePreferencesConsole {
                     case "file": file(commands); break;
 
                     case "dir": dir(); break;
-                    case "cd": cd(); break;
+                    case "cd": cd(commands); break;
 
                     case "clear": clearConsole(); break;
+
+                    case "close": running = false; break;
+                    case "exit": running = false; break;
 
                     default: Error.InvalidCommand(); break;
                 };
@@ -51,15 +57,33 @@ namespace DCodePreferencesConsole {
         }
 
         private static void file(String[] cmd) {
-
+            if (cmd.Length <= 1)
+                Console.WriteLine(STR.get(STR.OpenWithoutCommand));
+            else if (cmd[1] == "open") {
+                if (cmd.Length <= 2)
+                    Console.WriteLine(STR.get(STR.NeedEntryFileName));
+                else
+                    Console.WriteLine("Open file '" + cmd[2] + "'");
+            } else if (cmd[1] == "save")
+                Console.WriteLine("Save file");
+            else if (cmd[1] == "close")
+                Console.WriteLine("Close file");
+            else
+                Error.InvalidCommand();
         }
 
         private static void dir() {
-            //String [] folders = Path.
+            Console.WriteLine("Diretory: \"" + diretory + "\"");
+            String[] folders = new String[] { "Folder1", "Folder2" };
+
+            for (int i = 0; i < folders.Length; i++) {
+                Console.WriteLine(" " + folders[i]);
+            }
         }
 
-        private static void cd() {
-
+        private static void cd(String[] cmd) {
+            if (cmd.Length <= 1)
+                Console.WriteLine("You need entry any folder name, after 'cd' command.");
         }
 
         // Console

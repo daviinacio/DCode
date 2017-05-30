@@ -6,19 +6,7 @@ using System.Threading.Tasks;
 
 namespace DCodePreferencesConsole {
     class Error {
-        public static void NonSelectedFileError() {
-            switch (Program.lang) {
-                case 0: Console.WriteLine("No file selected, enter \"file open (Local file without spaces)\""); break;
-                case 1: Console.WriteLine("Nenhum arquivo selecionado, digite \"file open (Local do arquivo sem espaços)\""); break;
-            }
-        }
-
-        public static void InvalidCommand() {
-            switch (Program.lang) {
-                case 0: Console.WriteLine("Command not found"); break;
-                case 1: Console.WriteLine("Comando não encontrado"); break;
-            }
-
-        }
+        public static void NonSelectedFileError() { Console.WriteLine(STR.get(STR.NonSelectedFileError)); }
+        public static void InvalidCommand() { Console.WriteLine(STR.get(STR.InvalidCommand)); }
     }
 }
