@@ -6,3 +6,7 @@ C:\Users\Davi\Documents\GitHub\DCode\DCodePrefsConsole_C#\DCodePreferencesConsol
 C:\Users\Davi\Documents\GitHub\DCode\DCodePrefsConsole_C#\DCodePreferencesConsole\DCodePreferencesConsole\obj\Debug\DCodePreferencesConsole.pdb
 C:\Users\Davi\Documents\GitHub\DCode\DCodePrefsConsole_C#\DCodePreferencesConsole\DCodePreferencesConsole\bin\Debug\DCode.dll
 C:\Users\Davi\Documents\GitHub\DCode\DCodePrefsConsole_C#\DCodePreferencesConsole\DCodePreferencesConsole\bin\Debug\DCode.pdb
+C:\Users\Davi\Documents\GitHub\DCode\DCodePrefsConsole_C#\DCodePreferencesConsole\DCodePreferencesConsole\bin\Debug\DCodePreferencesConsole.exe.manifest
+C:\Users\Davi\Documents\GitHub\DCode\DCodePrefsConsole_C#\DCodePreferencesConsole\DCodePreferencesConsole\bin\Debug\DCodePreferencesConsole.application
+C:\Users\Davi\Documents\GitHub\DCode\DCodePrefsConsole_C#\DCodePreferencesConsole\DCodePreferencesConsole\obj\Debug\DCodePreferencesConsole.exe.manifest
+C:\Users\Davi\Documents\GitHub\DCode\DCodePrefsConsole_C#\DCodePreferencesConsole\DCodePreferencesConsole\obj\Debug\DCodePreferencesConsole.application

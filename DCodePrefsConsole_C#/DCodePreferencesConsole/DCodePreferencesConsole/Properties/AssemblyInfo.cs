@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DCodePreferencesConsole")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("DPrefs Console")]
+[assembly: AssemblyDescription("DCode Preferences Console")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DCodePreferencesConsole")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCompany("Davi Apps")]
+[assembly: AssemblyProduct("DCode Preferences Console")]
+[assembly: AssemblyCopyright("Copyright © DaviApps 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

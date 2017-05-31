@@ -55,6 +55,7 @@ public class DCodePreferences {
 
     public void save() {
         file.setText(list.ToString());
+        Console.WriteLine("Preference: Saved");
     }
 
     // Methods
@@ -87,6 +88,20 @@ public class DCodePreferences {
         if (list.contains(key)) // If item did found
             return list.getItem(key).getValue();
         return ifNotFound;
+    }
+
+    // Methods
+
+    public DCodeFile GetFile() {
+        return this.file;
+    }
+
+    public DCodePrefItem GetByIndex(int i) {
+        return list.getItem(i);
+    }
+
+    public int GetCount() {
+        return list.getCount();
     }
 
     // Getters, Setters and Adders

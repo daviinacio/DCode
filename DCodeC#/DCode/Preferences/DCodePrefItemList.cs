@@ -61,6 +61,14 @@ public class DCodePrefItemList {
         return null;
     }
 
+    public DCodePrefItem getItem(int i) {
+        return list.ToArray()[i];
+    }
+
+    public int getCount() {
+        return list.Count;
+    }
+
     // The setItem method is on DCodePreferences, becouse uses the getItem();
 
     public bool contains(String key) {
