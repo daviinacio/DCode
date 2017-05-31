@@ -36,6 +36,7 @@ public class DCodePrefItemList {
 
     public void addItem(String key, String value) {
         list.Add(new DCodePrefItem(key, value));
+        Console.WriteLine("Preference: '" + key + "' added");
     }
 
     public bool removeItem(String key){
@@ -43,7 +44,7 @@ public class DCodePrefItemList {
         for (int i = 0; i < items.Length; i++) {
             if (items [i].getKey().Equals(key)) {
                 list.RemoveAt(i);
-                Console.WriteLine(key + " removed");
+                Console.WriteLine("Preference: '" + key + "' removed");
                 return true;
             }
         }

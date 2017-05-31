@@ -79,6 +79,7 @@ public class DCodePreferences {
     public bool Set(String key, String value) {
         if (list.contains(key)) {
             list.getItem(key).setValue(value);
+            Console.WriteLine("Preference: '" + key + "' setted to: '" + value + "'");
             return true;
         }
         return false;
@@ -102,6 +103,10 @@ public class DCodePreferences {
 
     public int GetCount() {
         return list.getCount();
+    }
+
+    public bool Contains(String key) {
+        return list.contains(key);
     }
 
     // Getters, Setters and Adders

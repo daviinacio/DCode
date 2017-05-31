@@ -7,14 +7,14 @@
     <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="DCodePreferencesConsole.exe.manifest" size="4175">
+    <dependentAssembly dependencyType="install" codebase="DCodePreferencesConsole.exe.manifest" size="4176">
       <assemblyIdentity name="DCodePreferencesConsole.exe" version="1.0.0.2" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>PZBN52BrVil9QiUm8m5AKKzhvyUxFnEpmQKSoS4kEcE=</dsig:DigestValue>
+        <dsig:DigestValue>IRfpZSkhI6rnrAFiUDejxiStu1HybrCVwnM5AvaZNT8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
