@@ -30,11 +30,11 @@ namespace DCodePreferencesConsole {
                     case "get": get(commands); break;
                     case "remove": remove(commands); break;
 
-                    case "show": show(commands); break;
+                    //case "show": show(); break;
 
                     case "file": file(commands); break;
 
-                    case "text": if(dPrefs != null) Console.WriteLine(dPrefs.GetFile().getText()); else Console.WriteLine(STR.get(STR.NonSelectedFileError)); break;
+                    //case "text": if (dPrefs != null) Console.WriteLine(dPrefs.GetFile().getText()); else Console.WriteLine(STR.get(STR.NonSelectedFileError)); break;
 
                     case "dir": dir(); break;
                     case "cd": cd(commands); break;
@@ -78,6 +78,7 @@ namespace DCodePreferencesConsole {
         private static void get(String[] cmd) {
             if (dPrefs == null) { Error.NonSelectedFileError(); return; }
             if (cmd.Length == 2) {
+                if (cmd[1] == "*" || cmd[1] == "all") { show(); return; }
                 Console.WriteLine(dPrefs.Get(cmd[1], STR.get(STR.PrefsNotFound)));
             } else if (cmd.Length == 3) {
                 Console.WriteLine(dPrefs.Get(cmd[1], cmd[2]));
@@ -88,7 +89,7 @@ namespace DCodePreferencesConsole {
         private static void remove(String[] cmd) {
             if (dPrefs == null) { Error.NonSelectedFileError(); return; }
             if (cmd.Length <= 1) { Console.WriteLine(STR.get(STR.InvalidCommand)); return; }
-            if (cmd[1] == "*") {
+            if (cmd[1] == "*" || cmd[1] == "all") {
                 int len = dPrefs.GetCount();
                 for (int i = 0; i < len; i++)
                     dPrefs.Remove(dPrefs.GetByIndex(0).getKey());
@@ -98,11 +99,9 @@ namespace DCodePreferencesConsole {
                 Console.WriteLine(STR.get(STR.PrefsNotFound));
         }
 
-        private static void show(String[] cmd) {
+        private static void show() {
             if (dPrefs == null) { Error.NonSelectedFileError(); return; }
             int width = 25;
-            //Console.WriteLine("Prefs: " + dPrefs.GetCount());
-            //Console.WriteLine("(" + tabulacaoTitle("Key", width) + ")(" + tabulacaoTitle("Value", width * 2) + " )");
             if (dPrefs.GetCount() > 0)
                 for (int i = 0; i < dPrefs.GetCount(); i++) {
                     DCodePrefItem prefsItem = dPrefs.GetByIndex(i);
@@ -110,15 +109,32 @@ namespace DCodePreferencesConsole {
                     String value = prefsItem.getValue();
 
                     Console.WriteLine("[" + i + "] " + tabulacao(key, width) + "" + tabulacao(value, (width * 2)) + "");
-                } 
-            else
+                } else
                 Console.WriteLine("Preferences not found");
         }
 
         private static void file(String[] cmd) {
             if (cmd.Length <= 1)
                 Console.WriteLine(STR.get(STR.OpenWithoutCommand));
-            else if (cmd[1] == "open") {
+            else if (cmd[1] == "create") {
+                if (cmd.Length <= 2)
+                    Console.WriteLine(STR.get(STR.NeedEntryFileName));
+                else {
+                    String fileName = diretory + "\\" + cmd[2];
+                    if (File.Exists(fileName)) { Console.WriteLine(STR.get(STR.FileExists)); return; }
+
+                    if (dPrefs != null) {
+                        Console.Write(STR.get(STR.SaveFileBerofeClose) + " (y/n)> ");
+                        if (Console.Read() == 'y')
+                            dPrefs.save();
+                        dPrefs = null;
+                        Console.WriteLine(STR.get(STR.FileClosed));
+                    }
+
+                    dPrefs = new DCodePreferences(new DCodeFile(fileName));
+                    dPrefs = new DCodePreferences(new DCodeFile(fileName));
+                }
+            } else if (cmd[1] == "open") {
                 if (cmd.Length <= 2)
                     Console.WriteLine(STR.get(STR.NeedEntryFileName));
                 else {
@@ -134,9 +150,17 @@ namespace DCodePreferencesConsole {
                     }
 
                     dPrefs = new DCodePreferences(new DCodeFile(fileName));
-                    Console.WriteLine("Prefs: " + dPrefs.GetCount());
 
+                    if (dPrefs.GetFile().getStatusKey() != DCodeFile.ALRIGHT) { dPrefs = null; return; }
                 }
+            } else if (cmd[1] == "delete") {
+                if (dPrefs == null) { Error.NonSelectedFileError(); return; }
+                Console.Write(STR.get(STR.ConfirmDeleteFile) + " (y/n)> ");
+                if (Console.Read() == 'y') {
+                    dPrefs.GetFile().delete();
+                    dPrefs = null;
+                }
+                Console.WriteLine(STR.get(STR.FileDeleted));
             } else if (cmd[1] == "save") {
                 if (dPrefs == null) { Error.NonSelectedFileError(); return; }
                 dPrefs.save();
@@ -149,6 +173,26 @@ namespace DCodePreferencesConsole {
                 String file = dPrefs.GetFile().getFile();
                 dPrefs = new DCodePreferences(new DCodeFile(file));
                 Console.WriteLine("Prefs: " + dPrefs.GetCount());
+            } else if (cmd[1] == "dir") {
+                if (dPrefs == null) { Error.NonSelectedFileError(); return; }
+                Console.WriteLine(dPrefs.GetFile().getFile());
+            } else if (cmd[1] == "info") {
+                if (dPrefs == null) { Error.NonSelectedFileError(); return; }
+                DCodeFile dFile = dPrefs.GetFile();
+                DCode df = new DCode(DCode.getMode(dFile.getFileText()));
+                DCode dp = new DCode(DCode.getMode(dFile.getText()));
+
+                //Console.WriteLine("File Properties");
+                Console.WriteLine("Title: '" + dFile.getTitle() + "'");
+                Console.WriteLine("Encode Type: '" + dFile.getEncodeType() + "'");
+                Console.WriteLine("Encode Mode: '" + df.getOpen() + "', " + "'" + df.getSpace() + "', " + "'" + df.getClose() + "'");
+                Console.WriteLine("Text: '" + dFile.getText() + "'");
+
+                Console.WriteLine("");
+                //Console.WriteLine("Content properties");
+                Console.WriteLine("Content Encode Mode: '" + dp.getOpen() + "', " + "'" + dp.getSpace() + "', " + "'" + dp.getClose() + "'");
+
+                // dir
             } else if (cmd[1] == "--help") {
                 STR.showHelp(STR.HELP_FILE);
             } else

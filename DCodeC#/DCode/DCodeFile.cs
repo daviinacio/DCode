@@ -140,7 +140,7 @@ public class DCodeFile {
         //File.WriteAllText(file, fileText);
     }
 
-    protected String getFileText() {
+    public String getFileText() {
         return DCodeFile.getFileText(this.file);
     }
 

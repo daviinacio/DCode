@@ -30,18 +30,18 @@ public class DCodePreferences {
         this.file = file;
         
         if(file.getStatusKey() == DCodeFile.EMPTY){
-            Console.WriteLine("File empty, base file ceated");
+            Console.WriteLine("Preference: File empty, base file ceated");
             file.createBaseFile();
         } else
         if(file.getStatusKey() == DCodeFile.NOTFOUNDED){
-            Console.WriteLine("File not founded, file created");
+            Console.WriteLine("Preference: File not founded, file created");
             file.createFile();
         } else
         if(file.getStatusKey() == DCodeFile.ERROR){
-            Console.WriteLine("File error load");
+            Console.WriteLine("Preference: File error load");
         } else
         if(file.getStatusKey() == DCodeFile.OTHERENCODER) {
-            Console.WriteLine("File with other encode mode");
+            Console.WriteLine("Preference: File with other encode mode");
         }
         
         // Second verification
