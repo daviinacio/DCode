@@ -25,11 +25,15 @@ public class DCodeFile {
     
     // Static values
     public static int ALRIGHT = 100, ERROR = 101, EMPTY = 102, NOTFOUNDED = 103, OTHERENCODER = 104;
+    
+    // File assigned=s
+    public static int DCODEFILE = 0x00, PREFERENCEFILE = 0x01;
 
     // File properties
     private String encodeType = "";
     private String title = "";
-    private String passWd = "";
+    private int assign = DCODEFILE;
+    private String text = "";
     
     // Constructors
     
@@ -52,6 +56,10 @@ public class DCodeFile {
 //    public DCodeFile(File file){
 //        this(file, null);
 //    }
+    
+    public DCodeFile(File path, String file){
+        this(new File(path, file));
+    }
 
     public DCodeFile(File file/*, CCode ccode*/){
         this.file = file;
@@ -59,12 +67,14 @@ public class DCodeFile {
         
         this.dcode = new DCode(DCode.FILE);
 //        this.ccode = ccode;
+
+        loadStatusKey();
         
-        //this.getStatusKey();
-        
-        if(this.getStatusKey() == DCodeFile.OTHERENCODER) // Set DCode mode to mode of file
-            if(DCode.getMode(this.getFileText()) != DCode.UNKNOWN) // If isn't unknown mode
-                this.dcode = new DCode(DCode.getMode(this.getFileText())); // Set dcode to this mode
+        if(statusKey == OTHERENCODER){
+            int encodeMode = DCode.getMode(this.getFileText());
+            if(encodeMode != DCode.UNKNOWN)
+                this.dcode = new DCode(encodeMode);
+        }
 
         if(statusKey == ERROR){
             this.setTitle("ERROR LOAD");
@@ -95,8 +105,10 @@ public class DCodeFile {
             if(!file.getParentFile().exists())
                 file.getParentFile().mkdirs();
             try { file.createNewFile(); } catch (IOException ex) {}
-            if(file.exists())
+            if(file.exists()){
+                System.out.println("File created.");
                 createBaseFile();
+            }
             else
                 System.err.println("Create file error.");
         } else
@@ -109,6 +121,7 @@ public class DCodeFile {
             this.setTitle(file.getName());
             this.setEncodeType("DCode");
             this.setText("");
+            System.out.println("Base file created.");
         } else
             System.err.println("The file content will be losted.");
     }
@@ -128,40 +141,44 @@ public class DCodeFile {
     // File encoders and decoders
 
     public void setText(String text){
-        String _text = dcode.enCode(new String[] { encodeType, title, passWd, text });
-        if(statusKey == ALRIGHT){
-            setFileText(/*ccode == null ? */_text/* : ccode.enCrype(_text)*/);
-        } else{
-            System.err.println("You can't writes this file.");
-            System.err.println("This file contains unknown encode or is encrypted.");
-        }
+//        String _text = dcode.enCode(new String[] { encodeType, title, text });
+//        if(statusKey == ALRIGHT){
+//            setFileText(/*ccode == null ? */_text/* : ccode.enCrype(_text)*/);
+//        } else{
+//            System.err.println("You can't writes this file.");
+//            System.err.println("This file contains unknown encode or is encrypted.");
+//        }
+        saveFile();
     }
 
     public final String getText(){
-        if(statusKey == ALRIGHT){
-            String [] props = null;
-            if(!getFileText().equals("")){
-                String text = /*ccode == null ? */getFileText()/* : ccode.unCrype(getFileText())*/;
-                props = dcode.unCode(text);
-                if(props.length >= 4){
-                    this.encodeType = props[0];
-                    this.title = props[1];
-                    this.passWd = props[2];
-                } else{
-                    statusKey = ERROR;
-                    return "ERROR";
-                }
-            }
-            else{
-                this.statusKey = EMPTY;
-            }
-
-            return props[3];
-        } else
-        if(statusKey == NOTFOUNDED)
-            return "NOT FOUNDED";
+        loadFile();
+        if(statusKey == ALRIGHT)
+            return this.text;
         
         return "ERROR LOAD";
+    }
+    
+    public void loadFile(){
+        if(file != null && statusKey == ALRIGHT)
+            if(file.exists()){
+                String fileContent = this.getFileText();
+                String [] props = dcode.unCode(fileContent);
+                
+                if(props[2].equals("")) props[2] = "" + DCODEFILE;
+                
+                this.encodeType = props[0];
+                this.title = props[1];
+                this.assign = Integer.parseInt(props[2]);
+                this.text = props[3];
+            }
+    }
+    
+    public void saveFile(){
+        if(file != null && statusKey == ALRIGHT)
+            if(file.exists()){
+                setFileText(dcode.enCode(new String[]{encodeType, title, "" + assign, text}));
+            }
     }
     
     public void statusKeyAction(dFAction action){
@@ -186,11 +203,8 @@ public class DCodeFile {
             }
         }
         
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             fileOutputStream.write(fileText.getBytes());
-            fileOutputStream.close();
-            System.out.println("Arquivo salvo");
         } catch (FileNotFoundException e) {
             //e.printStackTrace();
             System.out.println("Arquivo não encontrado");
@@ -198,6 +212,7 @@ public class DCodeFile {
             //e.printStackTrace();
             System.out.println("Error, arquivo não salvo");
         }
+        System.out.println("Arquivo salvo");
     }
     
     protected String getFileText(){
@@ -234,24 +249,25 @@ public class DCodeFile {
     // Getters and setters
     
     public int getStatusKey(){
-        if (file.exists()) {
-            //if(!isDCode(this)){ statusKey = ERROR; return statusKey; } else // Return error if is not a DCode file
-            if (!this.getFileText().equals("")) { // Alright
-                String text = /*ccode == null ? */getFileText()/* : ccode.unCrype(getFileText())*/;
-                if (dcode.unCode(text).length >= 4) {
-                    statusKey = ALRIGHT;
-                    this.getText();
-                } else
-                if(DCode.getMode(text) != dcode.getMode()){ // Isn,t currently dcode mode
-                    statusKey = OTHERENCODER;
-                }else // Last vertion encoder
-                    statusKey = ERROR;
-            } else // File empty
-                statusKey = EMPTY;
-        } else
-            statusKey = NOTFOUNDED;
-        
+        loadStatusKey();
         return statusKey;
+    }
+    
+    private void loadStatusKey(){
+        if(file != null){
+            if(!file.exists()){ statusKey = NOTFOUNDED ; return;}
+            String fileText = this.getFileText();
+            
+            if(fileText.equals("")){ statusKey = EMPTY; return;}
+            if(DCode.getMode(fileText) != dcode.getMode()){statusKey = OTHERENCODER; return;}
+                
+            String [] props = dcode.unCode(fileText);
+
+            if(props.length >= 4)
+                statusKey = ALRIGHT;
+            else
+                statusKey = ERROR;
+        }
     }
 
     public void setEncodeType(String encodeType){
@@ -268,13 +284,13 @@ public class DCodeFile {
         return title;
     }
 
-    public void setPassWd(String passWd){
-        this.passWd = passWd;
+    public int getAssign() {
+        return assign;
     }
-    public String getPassWd(){
-        return passWd;
+    public void setAssign(int assign) {
+        this.assign = assign;
     }
-
+    
     public File getFile(){
         return file;
     }
@@ -341,7 +357,7 @@ public class DCodeFile {
     public String toString() {
         String text = /*ccode == null ? */getFileText()/* : ccode.unCrype(getFileText())*/;
         if(this.getStatusKey() == DCodeFile.ALRIGHT)
-            return dcode.enCode(new String[] {this.getEncodeType(), this.getTitle(), this.getPassWd(), this.getText()});
+            return dcode.enCode(new String[] {this.getEncodeType(), this.getTitle(), this.getText()});
         else
         if(this.getStatusKey() == DCodeFile.ERROR)
             return "ERROR";
