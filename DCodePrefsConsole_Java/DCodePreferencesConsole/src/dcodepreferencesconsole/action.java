@@ -1,29 +1,14 @@
 package dcodepreferencesconsole;
 
-import com.daviapps.dcode.*;
-import java.io.File;
+import com.daviapps.dcode.DCodeFile;
 
 /**
  * @author Davi
  */
-public class dcodePreferencesConsole {
-    private static File diretory;
-    private static DCodeFile file;
+public class action {
     
-    public static void main(String[] args) {
-        // Para depuração
-        diretory = new File("C:\\Users\\Davi\\Desktop");
-        openFile("dPrefs2.dcode");
-        
-        //System.err.println("" + file.getStatusKey());
-    }
-    
-    // Console functions
-    
-    // Action functions
-    
-    private static void openFile(String fileName){
-        file = new DCodeFile(diretory, fileName){
+    public static void openFile(String fileName){
+        program.file = new DCodeFile(program.diretory, fileName){
             @Override
             public void onAlright() {
                 System.out.println("Alright");
@@ -47,5 +32,4 @@ public class dcodePreferencesConsole {
             }
         };
     }
-    
 }
