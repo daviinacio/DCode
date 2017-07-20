@@ -3,6 +3,7 @@
 
 #include "console_color.h"
 
+
 #define STR_LENGTH 20
 #define ARRAY_LENGTH 5
 

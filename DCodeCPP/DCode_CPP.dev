@@ -1,17 +1,17 @@
 [Project]
-FileName=DCP_CPP.dev
-Name=DPC_CPP
-Type=1
+FileName=DCode_CPP.dev
+Name=DCode_CPP
+Type=3
 Ver=2
 ObjFiles=
 Includes=
-Libs=C:\Users\Davi\Documents\GitHub\DCode\DCodeCPP
-PrivateResource=DCP_CPP_private.rc
+Libs=
+PrivateResource=DCode_CPP_private.rc
 ResourceIncludes=
 MakeIncludes=
-Compiler=
-CppCompiler=
-Linker=_@@_../DCodeCPP/libDCode_CPP.a_@@_
+Compiler=-DBUILDING_DLL=1_@@_
+CppCompiler=-DBUILDING_DLL=1_@@_
+Linker=_@@_
 IsCpp=1
 Icon=
 ExeOutput=
@@ -19,7 +19,7 @@ ObjectOutput=
 LogOutput=
 LogOutputEnabled=0
 OverrideOutput=0
-OverrideOutputName=DCP_CPP.exe
+OverrideOutputName=DCode_CPP.dll
 HostApplication=
 UseCustomMakefile=0
 CustomMakefile=
@@ -29,29 +29,29 @@ IncludeVersionInfo=1
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000001000000
-UnitCount=6
+UnitCount=4
 
 [VersionInfo]
 Major=1
 Minor=0
 Release=0
-Build=282
+Build=5
 LanguageID=1033
 CharsetID=1252
-CompanyName=DaviApps
-FileVersion=1.0.0.282
-FileDescription=DCode Preferences Console CPP
-InternalName=DPC CPP
-LegalCopyright=DaviApps (c) 2017
+CompanyName=
+FileVersion=1.0.0.5
+FileDescription=Developed using the Dev-C++ IDE
+InternalName=
+LegalCopyright=
 LegalTrademarks=
-OriginalFilename=DPC CPP
-ProductName=DCode Preferences Console CPP
-ProductVersion=1.0.0.282
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.5
 AutoIncBuildNr=1
 SyncProduct=1
 
 [Unit1]
-FileName=main.cpp
+FileName=dllmain.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -61,7 +61,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit2]
-FileName=console.h
+FileName=dll.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -71,7 +71,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit3]
-FileName=action.h
+FileName=DCode.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -81,27 +81,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit4]
-FileName=resources.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit5]
-FileName=menu.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit6]
-FileName=console_color.h
+FileName=DCode.cpp
 CompileCpp=1
 Folder=
 Compile=1

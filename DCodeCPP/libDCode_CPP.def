@@ -1,0 +1,14 @@
+EXPORTS
+    _ZN5DCode6enCodeEPSs @1
+    _ZN5DCode7getModeESs @2
+    _ZN5DCode7getModeEv @3
+    _ZN5DCode7getOpenEv @4
+    _ZN5DCode8getCloseEv @5
+    _ZN5DCode8getSpaceEv @6
+    _ZN5DCodeC1Ev @7
+    _ZN5DCodeC2Ev @8
+    _ZN5DCodeD0Ev @9
+    _ZN5DCodeD1Ev @10
+    _ZN5DCodeD2Ev @11
+    _ZTI5DCode @12 DATA
+    _ZTV5DCode @13 DATA

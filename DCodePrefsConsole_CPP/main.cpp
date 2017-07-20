@@ -4,9 +4,19 @@
 
 #include "menu.h"	// This already includes action > console > resources
 
+//#include <cstdlib>
+//#include <stdio.h>
+//#include <stlib.h>
+
+//#include "DCode.h"
+
+//extern "C" __declspec(dllimport) void InstallHook();
+
 using namespace std;
 
 string diretory = "C:\\Users\\Davi\\Desktop";
+
+//extern "C" __declspec(dllimport) DllMain(HINSTANCE hInst, DWORD reason, LPVOID reserved)
 
 int main(int argc, char** argv) {
 	console_default_color = color_lightGray;
