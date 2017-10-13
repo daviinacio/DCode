@@ -1,5 +1,6 @@
 package com.daviapps.dcode.ddb;
 
+import com.daviapps.dcode.ddb.table.DDBTableColumnIndexListener;
 import com.daviapps.dcode.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * @author Davi
  */
-public class DDBTable implements DDBTableColumnIndexListener{
+public class DDBTable implements DDBTableColumnIndexListener {
     // Struct variables
     private static String rowSep = ";";
     private static DCode dcode = new DCode(DCode.NORMAL);
