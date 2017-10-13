@@ -103,7 +103,7 @@ public class DDBTableFile {
             content += System.getProperty("line.separator");
         }
         
-        System.out.println(content);
+        //System.out.println(content);
         
         
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
@@ -135,6 +135,23 @@ public class DDBTableFile {
             //System.out.println("Type: " + column.getType());
             if(column.getType() == 'i')
                 if(Integer.parseInt(row.get(columnStr)) > result)
+                    result = Integer.parseInt(row.get(columnStr));
+        }
+        
+        return result;
+    }
+    
+    public int min(String columnStr, String where){
+        DDBTableData resultSelect = select(columnStr, where, null);
+        DDBTableColumn column = resultSelect.columns.get(0);
+        int result = Integer.MAX_VALUE;
+        
+        //System.out.println(column.getType());
+        
+        for(DDBTableRow row : resultSelect.rows){
+            //System.out.println("Type: " + column.getType());
+            if(column.getType() == 'i')
+                if(Integer.parseInt(row.get(columnStr)) < result)
                     result = Integer.parseInt(row.get(columnStr));
         }
         
@@ -179,17 +196,17 @@ public class DDBTableFile {
                         row.add("NULL");
                     else{
                         if(column.getIncrement() == 'n'){
-                            System.err.println("DDBTableInsert.Error Null value on a column that don't allows null value.");
+                            System.err.println("DDBTableInsert.Insert.Error: Null value on a column that don't allows null value.");
                             return;
                         } else if(column.getIncrement() > 0){
                             if(column.getType() == 'i')
-                                row.add("" + ((int) count(column.getName(), null) + (column.getIncrement() - 1)));
+                                row.add("" + ((int) max(column.getName(), null) + column.getIncrement()));
                         }
                     }
                 } else {
                     if(column.isUnique())
                         if(count("*", column.getName() + " = " + row.get(i)) > 0){
-                            System.err.println("DDBTableInsert.Error [" + column.getName() + "]: " + row.get(i) + ", yet exists");
+                            System.err.println("DDBTableInsert.Insert.Error: [" + column.getName() + "]: " + row.get(i) + ", yet exists");
                             return;
                         }
                 }
@@ -199,7 +216,7 @@ public class DDBTableFile {
             data.rows.add(row);
             write();
         } else
-            System.err.println("DDBTableFile: insert not equals column and values length");
+            System.err.println("DDBTableFile.Insert.Error: insert not equals column and values length");
         
         
         /*for(String column : columns)
@@ -221,11 +238,20 @@ public class DDBTableFile {
     }
     
     public DDBTableData select(String [] columns, String where, String order){
-        DDBTableData result;
+        DDBTableData result = null;
         if(columns.length != 0) {
-            result = new DDBTableData();
-            for(String column : columns)
-                result.columns.add(data.columns.get(data.getColumnIndex(column)));
+            try{ result = new DDBTableData();
+                for(String column : columns)
+                    result.columns.add(data.columns.get(data.getColumnIndex(column)));
+            } catch(java.lang.ArrayIndexOutOfBoundsException e){
+                if(columns.length == 1 && columns[0] == "")
+                    System.err.println("DDBTableFile.Select.Error: columns not defineds");
+                else if(columns.length > 0)
+                    System.err.println("DDBTableFile.Select.Error: column [" + columns[result.columns.size()] + "] not founded");
+                return result;
+            }
+            
+            //java.lang.ArrayIndexOutOfBoundsException
         } else result = new DDBTableData(data.columns); // To avoids reload
         
         

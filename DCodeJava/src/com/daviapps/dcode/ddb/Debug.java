@@ -16,9 +16,9 @@ class Debug {
         //boolean var = true;
         //System.out.println(var ^= true);
         
-        //table.insert("*", "4, Teste, 40, 80, RS");
+        //table.insert("*", "10, Teste, 40, 80, RS");
         //table.insert("nome, estado", "Davi, MG");
-        System.out.println("-------------------------------");
+        //System.out.println("-------------------------------");
         
         DDBTableData data = 
                 table.select("*", null, null);
@@ -28,6 +28,7 @@ class Debug {
                 
         //System.out.println("Count: " + table.count("*", null));
         //System.out.println("Max: " + table.max("id", null));
+        //System.out.println("Min: " + table.min("id", null));
         
         //table.insert("id, nome, peso", "2, Davi, 18");
         //table.insert("nome, peso", "Davi, 18");
