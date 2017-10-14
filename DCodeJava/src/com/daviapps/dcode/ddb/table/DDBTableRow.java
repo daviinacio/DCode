@@ -56,12 +56,23 @@ public class DDBTableRow {
         }
         return out;
     }
+    
+    // Setter
+    protected boolean set(int i, String content){
+        try{ contents.set(i, content); return true; } 
+        //catch (java.lang.ArrayIndexOutOfBoundsException e){ return false; }
+        catch (java.lang.IndexOutOfBoundsException e){ return false; }
+    }
+    
+    protected boolean set(String columnName, String content){
+        return set(columnGetter.getColumnIndex(columnName), content);
+    }
 
     @Override
     public String toString() {
         String str = "";
         for(String con : contents)
-            str += con + " ";
+            str += con + '\t';
         return str;
     }
 }

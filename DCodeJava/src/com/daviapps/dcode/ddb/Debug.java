@@ -2,7 +2,9 @@ package com.daviapps.dcode.ddb;
 
 import com.daviapps.dcode.ddb.table.DDBTableData;
 import com.daviapps.dcode.ddb.table.DDBTableFile;
+import java.io.Console;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * @author Davi
@@ -16,13 +18,25 @@ class Debug {
         //boolean var = true;
         //System.out.println(var ^= true);
         
-        //table.insert("*", "10, Teste, 40, 80, RS");
+        //table.insert("nome", "Teste2");
         //table.insert("nome, estado", "Davi, MG");
         //System.out.println("-------------------------------");
         
+        //table.delete("nome = teste");
+        
+        //table.update("idade, estado", "18, SP", "estado = null");
+        //table.update("peso", "74", "peso = null");
+        
+        //table.update("idade", "41", "nome = rose");
+        
+        String query = "";
+        
+        //query = new Scanner(System.in).nextLine();
+        
+        //System.out.println(query);
+        
         DDBTableData data = 
-                table.select("*", null, null);
-                //file.select(new String[]{"id", "name", "age", "peso"}, "id = 0", null);
+                table.select("*", query.equals("") ? null : query, "id");                //file.select(new String[]{"id", "name", "age", "peso"}, "id = 0", null);
                 
         //System.out.println(data.columns.get(0).getAll());
                 
@@ -33,6 +47,7 @@ class Debug {
         //table.insert("id, nome, peso", "2, Davi, 18");
         //table.insert("nome, peso", "Davi, 18");
         
+        System.err.println(data);
         for(com.daviapps.dcode.ddb.table.DDBTableRow row : data.rows){
             System.out.println(row);
         }

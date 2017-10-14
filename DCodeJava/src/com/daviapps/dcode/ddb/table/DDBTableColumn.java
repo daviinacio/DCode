@@ -6,11 +6,18 @@ package com.daviapps.dcode.ddb.table;
 public class DDBTableColumn {
     // Properties
     private String columnName;
-    private char type;
+    private char type = 's';
     private boolean allowNull, unique;
     private int increment;
     
-    // Constructor
+    // Constructors
+    public DDBTableColumn(String columnName, boolean allowNull, boolean unique, int increment) {
+        this.columnName = columnName;
+        this.allowNull = allowNull;
+        this.unique = unique;
+        this.increment = increment;
+    }
+    
     public DDBTableColumn(String columnPropStr){
         String [] columnProp = columnPropStr.split("@");
         if(columnProp.length >= 1)
@@ -48,6 +55,29 @@ public class DDBTableColumn {
     public int getIncrement() {
         return increment;
     }
+    
+    // Setters
+
+    protected void setColumnName(String columnName) {
+        this.columnName = columnName;
+    }
+
+    protected void setType(char type) {
+        this.type = type;
+    }
+
+    protected void setAllowNull(boolean allowNull) {
+        this.allowNull = allowNull;
+    }
+
+    protected void setUnique(boolean unique) {
+        this.unique = unique;
+    }
+
+    protected void setIncrement(int increment) {
+        this.increment = increment;
+    }
+    
     
     protected String getAll(){
         return String.format("%s@%s%s%s%s", columnName, type, allowNull ? 1 : 0, unique ? 1 : 0, (char) increment);

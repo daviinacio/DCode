@@ -42,4 +42,15 @@ public class DDBTableData implements DDBTableColumnIndexListener {
         }
         return -1;
     }
+    
+    // String Methods
+
+    @Override
+    public String toString() {
+        String str = "";
+        for(DDBTableColumn col : this.columns)
+            str += col.getName() + '\t';
+        
+        return str;
+    }
 }

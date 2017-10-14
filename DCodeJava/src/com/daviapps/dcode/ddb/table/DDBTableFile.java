@@ -9,6 +9,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -166,32 +169,19 @@ public class DDBTableFile {
         this.insert(columns.contains("*") ? head.columnsStr.split(":") : columns.split(", "), values);
     }
     public void insert(String [] columns, String [] values){
-        //for(String column : columns)
-        //    System.out.println(column);
-        
         if(columns.length == values.length){
             DDBTableRow row = new DDBTableRow(data);
-            //boolean canInsert = true;
              
             for (int i = 0; i < data.columns.size(); i++) {
                 boolean insertNull = true;
                 
-                for (int j = 0; j < columns.length; j++) {
+                for (int j = 0; j < columns.length; j++)
                     if(data.columns.get(i).getName().equals(columns[j].split("@")[0])){
-                        row.add(values[j]);
-                        insertNull = false;
-                    }
-                }
+                        row.add(values[j]); insertNull = false; }
                 
                 DDBTableColumn column = data.columns.get(i);
                 
                 if(insertNull){
-                    /*if(column.isUnique()){
-                        if(count("*", column.getName() + " = " + 6) == 0)
-                            row.add("" + max(column.getName(), null));
-                        else
-                            System.err.println("ERROR UNIQUE");
-                    }*/
                     if(column.isAllowNull())
                         row.add("NULL");
                     else{
@@ -225,12 +215,33 @@ public class DDBTableFile {
             System.out.println(value);*/
     }
     
+    public void update(String columns, String values, String where){
+        this.update(columns.split(", "), values.split(", "), where);
+    }
+    
     public void update(String [] columns, String [] values, String where){
+        if(columns.length == values.length){
+            DDBTableData toUpdate = select("*", where, null);
+
+            for(DDBTableRow row : toUpdate.rows){
+                for(int i = 0; i < columns.length; i++)
+                    if(!row.set(columns[i], values[i]))
+                        System.err.println("DDBTableFile.Update.Error: row[" + toUpdate.rows.indexOf(row) + "]"
+                                + " column [" + columns[i] + "] not founded");
+            }
+            
+            write();
+        } else
+            System.err.println("DDBTableFile.Update.Error: columns length not equals values length");
         
     }
     
-    public void delete(String where){
+    public void delete(String where){ // Or Drop
+        DDBTableData toDelete = select("*", where, null);
+        for(DDBTableRow row : toDelete.rows)
+            data.rows.remove(row);
         
+        write();
     }
     
     public DDBTableData select(String columns, String where, String order){
@@ -239,31 +250,29 @@ public class DDBTableFile {
     
     public DDBTableData select(String [] columns, String where, String order){
         DDBTableData result = null;
+        
+        // Columns
         if(columns.length != 0) {
             try{ result = new DDBTableData();
                 for(String column : columns)
                     result.columns.add(data.columns.get(data.getColumnIndex(column)));
             } catch(java.lang.ArrayIndexOutOfBoundsException e){
-                if(columns.length == 1 && columns[0] == "")
+                if(columns.length == 1 && columns[0].equals(""))
                     System.err.println("DDBTableFile.Select.Error: columns not defineds");
                 else if(columns.length > 0)
                     System.err.println("DDBTableFile.Select.Error: column [" + columns[result.columns.size()] + "] not founded");
-                return result;
+                //return result;
             }
-            
-            //java.lang.ArrayIndexOutOfBoundsException
         } else result = new DDBTableData(data.columns); // To avoids reload
         
+        if(result.columns.isEmpty())
+            return new DDBTableData();
         
-        //System.out.println(columns.length);
-        
-        //for(DDBTableColumn column : result.columns)
-        //    System.out.println(column.getName());
-        
+        // Where        
         for(int i = 0; i < data.rows.size(); i++){
             boolean include = true;
             
-            if(where != null){
+            if(where != null && !where.equals("")){
                 include = false;
                 String [] whereArray = where.toLowerCase().split(" ");
                 if(whereArray.length == 3){ // One boolean
@@ -277,40 +286,61 @@ public class DDBTableFile {
             }
             
             if(include){
-                DDBTableRow row = new DDBTableRow(result);
-                for (int j = 0; j < result.columns.size(); j++){
-                    //System.out.println(columns[j]);
-                    row.add(data.rows.get(i).get(result.columns.get(j).getName()));
-                }
+                DDBTableRow row = null;
+                
+                if(!result.columns.equals(data.columns)){
+                    row = new DDBTableRow(result);
+                    for (int j = 0; j < result.columns.size(); j++){
+                        //System.out.println(columns[j]);
+                        row.add(data.rows.get(i).get(result.columns.get(j).getName()));
+                    }
+                } else
+                    row = data.rows.get(i);
+                
                 result.rows.add(row);
             }
-                //result.add(this.rows.get(i));
+        }
+        
+        // Sort
+        if(order != null && order != ""){
+            for(String sort : order.split(", ")){
+                if(sort.equals("")){
+                    System.err.println("DDBTableFile.Select.Sort.Error: query order string error");
+                    continue;
+                }
+
+                String [] _sort = sort.split(" ");
+                final int column = result.getColumnIndex(_sort[0]);
+                boolean ASC_DESC = true;
+                
+                if(column == -1){
+                    System.err.println("DDBTableFile.Select.Sort.Error: column[" + _sort[0] + "]"
+                            + " not selected");
+                    continue;
+                }
+
+                //System.out.println(column);
+
+                if(_sort.length >= 2)
+                    ASC_DESC = _sort[1].equals("ASC"); 
+
+                //System.out.println(ASC_DESC);
+
+                Comparator com = new Comparator<DDBTableRow>(){
+                    @Override
+                    public int compare(DDBTableRow t, DDBTableRow t1) {
+                        return t.get(column).compareTo(t1.get(column));
+                    }
+                };
+
+                try{
+                    Collections.sort(result.rows, ASC_DESC ? com : com.reversed());
+                } catch (java.lang.NullPointerException e){
+                    System.err.println("DDBTableFile.Select.Sort.Error: Colummn [" + column + "] not founded");
+                }
+            }
         }
         
         return result;
     }
-    
-    // Utils
-    /*private String [] columnsStrToArray(String columns){
-        String [] arrColumns = null;
-        if(columns.equals("") || columns.contains("*")){
-            arrColumns = new String[data.columns.size()];
-            for (int i = 0; i < arrColumns.length; i++)
-                arrColumns[i] = data.columns.get(i).getName();
-        }
-        
-        return arrColumns == null ? columns.split(", ") : arrColumns;
-    }*/
-    
-    // Interface methods
-    /*@Override
-    public int getColumnIndex(String columnName) {
-        for (int i = 0; i < columns.size(); i++){
-            //System.out.println(columns.get(i).getName() + " - " + columnName);
-            if(columns.get(i).getName().equals(columnName))
-                return i;
-        }
-        return -1;
-    }*/
-    
 }
