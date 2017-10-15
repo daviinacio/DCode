@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author Davi
  */
-public class DDBTableData implements DDBTableColumnIndexListener {
+public class DDBTableData implements ColumnIndexListener {
     // Data variables
     public List<DDBTableColumn> columns;
     public List<DDBTableRow> rows;
@@ -30,6 +30,12 @@ public class DDBTableData implements DDBTableColumnIndexListener {
     public DDBTableData(List<DDBTableColumn> columns){
         this.rows = new ArrayList<>();
         this.columns = columns;
+    }
+    
+    // Content function
+    public void clear(){
+        this.columns.clear();
+        this.rows.clear();
     }
 
     // Interface methods

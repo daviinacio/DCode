@@ -9,7 +9,7 @@ import java.util.List;
 public class DDBTableHead {
     private static DCode dcode = new DCode(DCode.NORMAL);
     // Properties
-    protected String tableName, encodeType, columnsStr;
+    protected String tableName, encodeType = "DCode", columnsStr;
     
     // Constructors
     public DDBTableHead(){}
@@ -17,8 +17,8 @@ public class DDBTableHead {
         String [] head = dcode.unCode(headStr);
         
         this.encodeType = head[0];
-        this.tableName = head[1];
-        this.columnsStr = head[2];
+        //this.tableName = head[1];
+        this.columnsStr = head[1];
     }
     
     // Setter
@@ -33,6 +33,6 @@ public class DDBTableHead {
     
     // Getters
     public String getAll(){
-        return dcode.enCode(new String[]{encodeType, tableName, columnsStr});
+        return dcode.enCode(new String[]{encodeType, /*tableName,*/ columnsStr});
     }
 }
