@@ -8,21 +8,23 @@ public class DDBTableColumn {
     // Properties
     private String columnName;
     private ColumnTypes type = ColumnTypes.STRING;
-    private boolean allowNull, unique;
+    private boolean allowNull, unique, primaryKey;
     private int increment;
     
     // Constructors
-    public DDBTableColumn(String columnName, ColumnTypes type, boolean allowNull, boolean unique, int increment) {
+    public DDBTableColumn(String columnName, ColumnTypes type, boolean primeryKey, boolean allowNull, boolean unique, int increment) {
         this.columnName = columnName;
         this.type = type;
+        this.primaryKey = primeryKey;
         this.allowNull = allowNull;
         this.unique = unique;
         this.increment = increment;
     }
     
-    public DDBTableColumn(String columnName, ColumnTypes type, boolean allowNull, boolean unique, char increment) {
+    public DDBTableColumn(String columnName, ColumnTypes type, boolean primeryKey, boolean allowNull, boolean unique, char increment) {
         this.columnName = columnName;
         this.type = type;
+        this.primaryKey = primeryKey;
         this.allowNull = allowNull;
         this.unique = unique;
         this.increment = increment;
@@ -35,9 +37,10 @@ public class DDBTableColumn {
         if(columnProp.length >= 2){
             //System.out.println(columnProp[1]);
             this.type =         ColumnTypes.getTypeByChar(columnProp[1].charAt(0));
-            this.increment =    columnProp[1].charAt(3);
-            this.allowNull =    columnProp[1].charAt(1) == '1';
-            this.unique =       columnProp[1].charAt(2) == '1';
+            this.increment =    columnProp[1].charAt(4);
+            this.primaryKey =   columnProp[1].charAt(1) == '1';
+            this.allowNull =    columnProp[1].charAt(2) == '1';
+            this.unique =       columnProp[1].charAt(3) == '1';
         }
         
         //System.out.println(String.format("%s, type: %s, allowNull: %s, unique: %s, increment: %s",
@@ -52,6 +55,10 @@ public class DDBTableColumn {
     
     public ColumnTypes getType() {
         return type;
+    }
+
+    public boolean isPrimaryKey() {
+        return primaryKey;
     }
 
     public boolean isAllowNull() {
@@ -76,6 +83,10 @@ public class DDBTableColumn {
         this.type = type;
     }
 
+    protected void setPrimaryKey(boolean primaryKey) {
+        this.primaryKey = primaryKey;
+    }
+
     protected void setAllowNull(boolean allowNull) {
         this.allowNull = allowNull;
     }
@@ -90,6 +101,6 @@ public class DDBTableColumn {
     
     
     protected String getAll(){
-        return String.format("%s@%s%s%s%s", columnName, type.getType() ,allowNull ? 1 : 0, unique ? 1 : 0, (char) increment);
+        return String.format("%s@%s%s%s%s%s", columnName, type.getType(), primaryKey ? 1 : 0, allowNull ? 1 : 0, unique ? 1 : 0, (char) increment);
     }
 }

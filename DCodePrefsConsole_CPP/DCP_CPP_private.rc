@@ -8,8 +8,8 @@
 // TO CHANGE VERSION INFORMATION, EDIT PROJECT OPTIONS...
 //
 1 VERSIONINFO
-FILEVERSION 1,0,0,282
-PRODUCTVERSION 1,0,0,282
+FILEVERSION 1,0,0,285
+PRODUCTVERSION 1,0,0,285
 FILETYPE VFT_APP
 {
   BLOCK "StringFileInfo"
@@ -17,14 +17,14 @@ FILETYPE VFT_APP
     BLOCK "040904E4"
     {
       VALUE "CompanyName", "DaviApps"
-      VALUE "FileVersion", "1.0.0.282"
+      VALUE "FileVersion", "1.0.0.285"
       VALUE "FileDescription", "DCode Preferences Console CPP"
       VALUE "InternalName", "DPC CPP"
       VALUE "LegalCopyright", "DaviApps (c) 2017"
       VALUE "LegalTrademarks", ""
       VALUE "OriginalFilename", "DPC CPP"
       VALUE "ProductName", "DCode Preferences Console CPP"
-      VALUE "ProductVersion", "1.0.0.282"
+      VALUE "ProductVersion", "1.0.0.285"
     }
   }
   BLOCK "VarFileInfo"

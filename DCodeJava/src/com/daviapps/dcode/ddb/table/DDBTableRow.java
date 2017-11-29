@@ -38,6 +38,17 @@ public class DDBTableRow {
         contents.add(content);
     }
     
+    // Remover
+    public void remove(int i){
+        contents.remove(i);
+    }
+    public void remove(String columnName){
+        remove(columnGetter.getColumnIndex(columnName));
+    }
+    public void remove(DDBTableItem item){
+        contents.remove(item);
+    }
+    
     // Getter
     public DDBTableItem get(int i){
         return contents.get(i);
@@ -50,19 +61,26 @@ public class DDBTableRow {
     }
     
     public DDBTableItem get(String columnName){
-        return get(columnName, null);
+        return get(columnName, DDBTableItem.NULL);
     }
     
     protected String getAll(String contSplitter){
         //return Arrays.toString(contents);
-        String out = "";
+        //String out = "";
+        StringBuilder out = new StringBuilder();
         for (int i = 0; i < contents.size(); i++) {
-            out += contents.get(i);
+            out.append(contents.get(i));
+            //out += contents.get(i);
             
             if(i < contents.size() - 1)
-                out += contSplitter;
+                out.append(contSplitter);
+                //out += contSplitter;
         }
-        return out;
+        return out.toString();
+    }
+    
+    public int columnsSize(){
+        return this.contents.size();
     }
     
     // Setter

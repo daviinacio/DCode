@@ -1,0 +1,1 @@
+"C:\Program Files\Java\jdk1.7.0_25/bin/java" -cp D:\Android_Sdk\sdk\platforms\android-10\android.jar;C:\Users\Davi\Documents\GitHub\DCode\DCodeJava\dist\DCode.jar com.daviapps.dcode.ddb.Debug
