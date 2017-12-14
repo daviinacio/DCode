@@ -4,10 +4,8 @@ import com.daviapps.dcode.DCode;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Davi, 11/11/2016
- */
-
+/** @author Davi, 11/11/2016 */
+@Deprecated
 public class DCodePrefItemList {
     protected DCode dcode;
     

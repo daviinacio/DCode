@@ -2,10 +2,8 @@ package com.daviapps.dcode.preferences;
 
 import com.daviapps.dcode.*;
 
-/**
- * @author Davi, 11/11/2016
- */
-
+/** @author Davi, 11/11/2016 */
+@Deprecated
 public class DCodePrefItem {
     protected final DCode dcode = new DCode();
     protected String key, value;

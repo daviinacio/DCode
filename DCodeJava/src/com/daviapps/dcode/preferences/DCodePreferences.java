@@ -5,11 +5,9 @@ import com.daviapps.dcode.Datas;
 import com.daviapps.dcode.DCodeFile;
 import java.io.File;
 
-/**
- * @author Davi, 11/11/2016
- */
-
-public class DCodePreferences {
+/** @author Davi, 11/11/2016 */
+@Deprecated
+public class DCodePreferences implements Preferences<String, String>{
     protected final DCode dcode = new DCode(DCode.ARRAY);
     
     // Private variables
@@ -63,7 +61,7 @@ public class DCodePreferences {
     }
     
     // Loader methods
-    
+    @Override
     public void save(){
         if(file.getStatusKey() == DCodeFile.EMPTY)
             file.createBaseFile();
@@ -76,9 +74,18 @@ public class DCodePreferences {
             this.onSave();
         }
     }
+
+    @Override
+    public void load() { }
     
     // Methods
+
+    @Override
+    public boolean contains(String key) {
+        return list.contains(key);
+    }
     
+    @Override
     public boolean add(String key, String value){
         if(!list.contains(key)){
             list.addItem(key, value);
@@ -87,6 +94,7 @@ public class DCodePreferences {
         return false; // If this item exists
     }
     
+    @Override
     public boolean remove(String key){
         if(list.contains(key)){
             list.removeItem(key);
@@ -95,6 +103,7 @@ public class DCodePreferences {
         return false;
     }
     
+    @Override
     public boolean set(String key, String value){
         if(list.contains(key)){
             list.getItem(key).setValue(value);
@@ -103,6 +112,12 @@ public class DCodePreferences {
         return false;
     }
     
+    @Override
+    public String get(String key){ // GetString
+        return get(key, null);
+    }
+    
+    @Override
     public String get(String key, String ifNotFound){
         if(list.contains(key)) // If item did found
             return list.getItem(key).getValue();
@@ -121,6 +136,7 @@ public class DCodePreferences {
         return list.getList().get(i).getValue();
     }
     
+    @Override
     public int getSize(){
         return list.getList().size();
     }
@@ -161,10 +177,6 @@ public class DCodePreferences {
     }
     
     // Getters
-    public String get(String key){ // GetString
-        return get(key, null);
-    }
-    
     public int getInt(String key, int ifNotFound){ // GetInteger
         try { return Integer.parseInt(get(key)); }
         catch (IndexOutOfBoundsException e) {
@@ -216,6 +228,7 @@ public class DCodePreferences {
     // Getters, Setters, Adders and Removers array
     
     // Adders array
+    @Override
     public boolean add(String [] keys, String [] values){ // AddStringArray
         if(keys.length == values.length){
             for(int i = 0; i < keys.length; i++){
@@ -267,6 +280,7 @@ public class DCodePreferences {
     }
     
     // Setters array
+    @Override
     public boolean set(String [] keys, String [] values){ // SetStringArray
         if(keys.length == values.length){
             for(int i = 0; i < keys.length; i++){
@@ -318,7 +332,7 @@ public class DCodePreferences {
     }
     
     // Getters array
-    
+    @Override
     public String [] get(String [] keys, String ifNotFound){ // GetStringArray
         String [] outp = new String[keys.length];
         for(int i = 0; i < keys.length; i++){
@@ -330,7 +344,7 @@ public class DCodePreferences {
         }
         return outp;
     }
-    
+    @Override
     public String [] get(String [] keys){ // GetStringArray
         return get(keys, null);
     }
@@ -400,7 +414,7 @@ public class DCodePreferences {
     }
     
     // Removers array
-    
+    @Override
     public void remove(String [] keys){
         for (String key : keys) {
             remove(key);
