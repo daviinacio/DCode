@@ -9,6 +9,7 @@ package com.daviapps.dcode;
  *
  * @author Davi
  */
+@Deprecated
 public abstract class dFAction {
     private DCodeFile dFile;
     

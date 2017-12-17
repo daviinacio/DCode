@@ -7,7 +7,7 @@ import java.io.File;
 
 /** @author Davi, 11/11/2016 */
 @Deprecated
-public class DCodePreferences implements Preferences<String, String>{
+public class DCodePreferences implements Preferences {
     protected final DCode dcode = new DCode(DCode.ARRAY);
     
     // Private variables
@@ -75,7 +75,6 @@ public class DCodePreferences implements Preferences<String, String>{
         }
     }
 
-    @Override
     public void load() { }
     
     // Methods
@@ -142,15 +141,17 @@ public class DCodePreferences implements Preferences<String, String>{
     }
     
     // Adders
-    
+    @Override
     public boolean add(String key, int value){ // AddInteger
         return add(key, Integer.toString(value));
     }
     
+    @Override
     public boolean add(String key, double value){ // AddDouble
         return add(key, Double.toString(value));
     }
     
+    @Override
     public boolean add(String key, boolean value){ // AddBoolean
         return add(key, Boolean.toString(value));
     }
@@ -160,14 +161,17 @@ public class DCodePreferences implements Preferences<String, String>{
     }
     
     // Setters
+    @Override
     public boolean set(String key, int value){ // SetInteger
         return set(key, Integer.toString(value));
     }
     
+    @Override
     public boolean set(String key, double value){ // SetDouble
         return set(key, Double.toString(value));
     }
     
+    @Override
     public boolean set(String key, boolean value){ // SetBoolean
         return set(key, Boolean.toString(value));
     }
@@ -177,6 +181,7 @@ public class DCodePreferences implements Preferences<String, String>{
     }
     
     // Getters
+    @Override
     public int getInt(String key, int ifNotFound){ // GetInteger
         try { return Integer.parseInt(get(key)); }
         catch (IndexOutOfBoundsException e) {
@@ -185,10 +190,12 @@ public class DCodePreferences implements Preferences<String, String>{
         return ifNotFound;
     }
     
+    @Override
     public int getInt(String key){ // GetInteger
         return getInt(key, 0);
     }
     
+    @Override
     public double getDouble(String key, double ifNotFound){ // GetDouble
         try { return Double.parseDouble(get(key)); }
         catch (IndexOutOfBoundsException e) {
@@ -197,10 +204,12 @@ public class DCodePreferences implements Preferences<String, String>{
         return ifNotFound;
     }
     
+    @Override
     public double getDouble(String key){ // GetDouble
         return getDouble(key, 0);
     }
     
+    @Override
     public boolean getBool(String key, boolean ifNotFound){ // GetBoolean
         try { return Boolean.parseBoolean(get(key)); }
         catch (IndexOutOfBoundsException e){
@@ -209,6 +218,7 @@ public class DCodePreferences implements Preferences<String, String>{
         return ifNotFound;
     }
     
+    @Override
     public boolean getBool(String key){ // GetBoolean
         return getBool(key, false);
     }
@@ -229,106 +239,111 @@ public class DCodePreferences implements Preferences<String, String>{
     
     // Adders array
     @Override
-    public boolean add(String [] keys, String [] values){ // AddStringArray
+    public boolean [] add(String [] keys, String [] values){ // AddStringArray
+        boolean [] result = new boolean[keys.length];
         if(keys.length == values.length){
             for(int i = 0; i < keys.length; i++){
-                add(keys[i], values[i]);
+                result[i] = add(keys[i], values[i]);
             }
-            return true;
         }
-        return false;
+        
+        return result;
+    }
+    @Override
+    public boolean [] add(String [] keys, int [] values){ // AddIntegerArray
+        boolean [] result = new boolean[keys.length];
+        if(keys.length == values.length){
+            for(int i = 0; i < keys.length; i++){
+                result[i] = add(keys[i], values[i]);
+            }
+        }
+        
+        return result;
+    }
+    @Override
+    public boolean [] add(String [] keys, double [] values){ // AddDoubleArray
+        boolean [] result = new boolean[keys.length];
+        if(keys.length == values.length){
+            for(int i = 0; i < keys.length; i++){
+                result[i] = add(keys[i], values[i]);
+            }
+        }
+        return result;
+    }
+    @Override
+    public boolean [] add(String [] keys, boolean [] values){ // AddBooleanArray
+        boolean [] result = new boolean[keys.length];
+        if(keys.length == values.length){
+            for(int i = 0; i < keys.length; i++){
+                result[i] = add(keys[i], values[i]);
+            }
+        }
+        return result;
     }
     
-    public boolean add(String [] keys, int [] values){ // AddIntegerArray
+    public boolean [] add(String [] keys, Datas [] values){ // AddDatasArray
+        boolean [] result = new boolean[keys.length];
         if(keys.length == values.length){
             for(int i = 0; i < keys.length; i++){
-                add(keys[i], values[i]);
+                result[i] = add(keys[i], values[i]);
             }
-            return true;
         }
-        return false;
-    }
-    
-    public boolean add(String [] keys, double [] values){ // AddDoubleArray
-        if(keys.length == values.length){
-            for(int i = 0; i < keys.length; i++){
-                add(keys[i], values[i]);
-            }
-            return true;
-        }
-        return false;
-    }
-    
-    public boolean add(String [] keys, boolean [] values){ // AddBooleanArray
-        if(keys.length == values.length){
-            for(int i = 0; i < keys.length; i++){
-                add(keys[i], values[i]);
-            }
-            return true;
-        }
-        return false;
-    }
-    
-    public boolean add(String [] keys, Datas [] values){ // AddDatasArray
-        if(keys.length == values.length){
-            for(int i = 0; i < keys.length; i++){
-                add(keys[i], values[i]);
-            }
-            return true;
-        }
-        return false;
+        return result;
     }
     
     // Setters array
     @Override
-    public boolean set(String [] keys, String [] values){ // SetStringArray
+    public boolean [] set(String [] keys, String [] values){ // SetStringArray
+        boolean [] result = new boolean[keys.length];
         if(keys.length == values.length){
             for(int i = 0; i < keys.length; i++){
-                set(keys[i], values[i]);
+                result[i] = set(keys[i], values[i]);
             }
-            return true;
         }
-        return false;
+        return result;
     }
     
-    public boolean set(String [] keys, int [] values){ // SetIntegerArray
+    @Override
+    public boolean [] set(String [] keys, int [] values){ // SetIntegerArray
+        boolean [] result = new boolean[keys.length];
         if(keys.length == values.length){
             for(int i = 0; i < keys.length; i++){
-                set(keys[i], values[i]);
+                result[i] = set(keys[i], values[i]);
             }
-            return true;
         }
-        return false;
+        return result;
     }
     
-    public boolean set(String [] keys, double [] values){ // SetDoubleArray
+    @Override
+    public boolean [] set(String [] keys, double [] values){ // SetDoubleArray
+        boolean [] result = new boolean[keys.length];
         if(keys.length == values.length){
             for(int i = 0; i < keys.length; i++){
-                set(keys[i], values[i]);
+                result[i] = set(keys[i], values[i]);
             }
-            return true;
         }
-        return false;
+        return result;
     }
     
-    public boolean set(String [] keys, boolean [] values){ // SetBooleanArray
+    @Override
+    public boolean [] set(String [] keys, boolean [] values){ // SetBooleanArray
+        boolean [] result = new boolean[keys.length];
         if(keys.length == values.length){
             for(int i = 0; i < keys.length; i++){
-                set(keys[i], values[i]);
+                result[i] = set(keys[i], values[i]);
             }
-            return true;
         }
-        return false;
+        return result;
     }
     
-    public boolean set(String [] keys, Datas [] values){ // SetDatasArray
+    public boolean [] set(String [] keys, Datas [] values){ // SetDatasArray
+        boolean [] result = new boolean[keys.length];
         if(keys.length == values.length){
             for(int i = 0; i < keys.length; i++){
-                set(keys[i], values[i]);
+                result[i] = set(keys[i], values[i]);
             }
-            return true;
         }
-        return false;
+        return result;
     }
     
     // Getters array
@@ -344,11 +359,13 @@ public class DCodePreferences implements Preferences<String, String>{
         }
         return outp;
     }
+    
     @Override
     public String [] get(String [] keys){ // GetStringArray
         return get(keys, null);
     }
     
+    @Override
     public int [] getInt(String [] keys, int ifNotFound){ // GetIntegerArray
         int [] outp = new int[keys.length];
         for(int i = 0; i < keys.length; i++){
@@ -361,10 +378,12 @@ public class DCodePreferences implements Preferences<String, String>{
         return outp;
     }
     
-     public int [] getInt(String [] keys){ // GetIntegerArray
-         return getInt(keys, 0);
-     }
+    @Override
+    public int [] getInt(String [] keys){ // GetIntegerArray
+        return getInt(keys, 0);
+    }
     
+    @Override
     public double [] getDouble(String [] keys, double ifNotFound){ // GetDoubleArray
         double [] outp = new double[keys.length];
         for(int i = 0; i < keys.length; i++){
@@ -377,10 +396,12 @@ public class DCodePreferences implements Preferences<String, String>{
         return outp;
     }
     
+    @Override
     public double [] getDouble(String [] keys){ // GetDoubleArray
         return getDouble(keys, 0);
     }
     
+    @Override
     public boolean [] getBool(String [] keys, boolean ifNotFound){ // GetBooleanArray
         boolean [] outp = new boolean[keys.length];
         for(int i = 0; i < keys.length; i++){
@@ -393,6 +414,7 @@ public class DCodePreferences implements Preferences<String, String>{
         return outp;
     }
     
+    @Override
     public boolean [] getBool(String [] keys){ // GetBooleanArray
         return getBool(keys, false);
     }

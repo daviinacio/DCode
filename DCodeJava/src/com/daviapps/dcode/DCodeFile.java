@@ -1,7 +1,6 @@
 package com.daviapps.dcode;
 
 import android.os.Environment;
-//import com.daviapps.ccode.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,14 +9,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-/**
- * @author Davi, 10/11/2016
- */
+/** @author Davi, 10/11/2016 */
+
 
 public class DCodeFile {
-    //protected final DCode dcode = new DCode('{', '_', '}');
     protected DCode dcode;
-    //protected CCode ccode;
     
     // Private variables
     protected File path, file;
