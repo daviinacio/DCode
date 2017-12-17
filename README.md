@@ -32,7 +32,7 @@ Compatibility
         - .Net Framework v4.5
         
     - DCode.jar:
-        - JDK 8
+        - JDK 7
     
         - JVM: Windows, Mac OS, Linux.
         

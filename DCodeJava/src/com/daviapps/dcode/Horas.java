@@ -1,16 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.daviapps.dcode;
 
 import java.util.Calendar;
 
-/**
- *
- * @author Davi
- */
+/** @author Davi */
+@Deprecated
 public class Horas {
     protected final static DCode dcode = new DCode(DCode.ARRAY);
 

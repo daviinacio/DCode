@@ -2,10 +2,8 @@ package com.daviapps.dcode;
 
 import java.util.Calendar;
 
-/**
- * @author Davi, 10/11/2016
- */
-
+/** @author Davi, 10/11/2016 */
+@Deprecated
 public class Datas {
     protected final DCode dcode = new DCode(DCode.DATAs);
 
