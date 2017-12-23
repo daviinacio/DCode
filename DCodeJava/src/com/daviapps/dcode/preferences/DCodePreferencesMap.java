@@ -5,7 +5,6 @@ import com.daviapps.dcode.exception.AddException;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /** @author Davi, 13/12/2017 */
 public class DCodePreferencesMap implements Preferences {
