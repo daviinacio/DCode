@@ -6,6 +6,8 @@ public class dcp {
     //public static Preferences prefs = new DCodePreferences("C:\\Users\\Davi\\Desktop\\dPrefs.dcode");
     public static void main(String [] args){
         
+        System.out.println(" -- Debug.java -- ");
+        
         //prefs.add("nome", "Davi");
         //prefs.add("idade", 18);
         
@@ -15,14 +17,14 @@ public class dcp {
         
         String [] keys = {"nome", "idade"};
         
-        prefs.add(keys, new String[]{"Davi", "18"});
+        //prefs.add(keys, new String[]{"Davi", "18"});
 
         for(String value : prefs.get(keys)) System.out.print(value + "; "); System.out.println();
 
         //prefs.remove("nome", "idade");
         
         //prefs.set("idade", 65.0);
-        prefs.set(new String[]{"nome", "idade"}, new String[]{"Pardall", "65"});
+        prefs.set(new String[]{"nome", "idade"}, new String[]{"Davi Inácio", "65"});
         //prefs.set(new String[]{"nome", "idade"}, new int[]{12, 2});
         //prefs.set(new String[]{"nome", "idade"}, new boolean[]{true, false});
 

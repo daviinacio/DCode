@@ -1,13 +1,16 @@
 package com.daviapps.dcode.preferences;
 
-import com.daviapps.dcode.DCodeFile;
+import com.daviapps.dcode.*;
 import com.daviapps.dcode.exception.AddException;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /** @author Davi, 13/12/2017 */
 public class DCodePreferencesMap implements Preferences {
+    private DCode dcode = new DCode(DCode.ARRAY);
+    private DCode prefDCode = new DCode();
     private DCodeFile file;
     protected Map<String, String> map;
     
@@ -29,12 +32,41 @@ public class DCodePreferencesMap implements Preferences {
     
     // File methods
     public void load() {
-        System.out.println("DCPM.load()");
+        if(file != null){
+            //System.out.println(file.getText());
+            String [] prefs = dcode.unCode(file.getText());
+            
+            for(String pref : prefs){
+                //System.out.println(pref);
+                String [] prefData = prefDCode.unCode(pref);
+                //System.out.println(String.format("Key: %s, Value: %s", prefData[0], prefData[1]));
+                this.map.put(prefData[0], prefData[1]);
+            }
+        }
     }
     
     @Override
     public void save() {
-        System.out.println("DCPM.save()");
+        if(file != null){
+            StringBuilder prefs = new StringBuilder();
+            prefs.append(dcode.getOpen());
+            
+            for (Map.Entry<String, String> m : this.map.entrySet()) {
+                String prefData = prefDCode.enCode(new String[] { m.getKey(), m.getValue() });
+                
+                prefs.append(prefData);
+                prefs.append(dcode.getSpace());
+                
+                //System.out.println(prefData);
+                
+                //System.out.println(String.format("Key: %s, Value: %s", m.getKey(), m.getValue()));
+            }
+            
+            prefs.append(dcode.getClose());
+            
+            //System.out.println(prefs);
+            file.setText(prefs.toString());
+        }
     }
     
     // List methods
