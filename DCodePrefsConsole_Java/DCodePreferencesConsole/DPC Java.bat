@@ -1,1 +1,0 @@
-java -jar "C:\Users\Davi\Documents\GitHub\DCode\DCodePrefsConsole_Java\DCodePreferencesConsole\dist\DCodePreferencesConsole.jar"

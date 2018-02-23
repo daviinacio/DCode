@@ -1,4 +1,0 @@
-Criar um Master Data Console Reader
-
-O CMD main, vai funcionar como um hub.
-Caso seja, por exemplo, nescessario a utilização do "DCP_CPP", ele  será executado com seus argumentos

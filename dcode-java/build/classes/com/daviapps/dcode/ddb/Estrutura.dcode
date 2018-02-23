@@ -1,0 +1,17 @@
+{DCode_Estrutura DDB__{
+    [id:name:price:count:detail:]_
+    [
+        <0;teste;2;1;detalhe;>:
+        <0;teste;2;1;detalhe;>:
+        <0;teste;2;1;detalhe;>:
+        <0;teste;2;1;detalhe;>:
+        <0;teste;2;1;detalhe;>:
+        <0;teste;2;1;detalhe;>:
+        <0;teste;2;1;detalhe;>:
+        <0;teste;2;1;detalhe;>:
+        <0;teste;2;1;detalhe;>:
+        <0;teste;2;1;detalhe;>:
+        <0;teste;2;1;detalhe;>:
+        <0;teste;2;1;detalhe;>:
+    ]_
+}_}
