@@ -1,17 +1,18 @@
-/*#ifndef _DLL_H_
+#ifndef _DLL_H_
 #define _DLL_H_
 
-#include <string>
+#if BUILDING_DLL
+#define DLLIMPORT __declspec(dllexport)
+#else
+#define DLLIMPORT __declspec(dllimport)
+#endif
 
-#include "DCode.h"
-
-
-
-using namespace std;
-
-class DLLIMPORT DLL {
+class DLLIMPORT DllClass
+{
 	public:
-		DLL();
+		DllClass();
+		virtual ~DllClass();
+		void HelloWorld();
 };
 
-#endif*/
+#endif

@@ -1,0 +1,9 @@
+EXPORTS
+    _ZN5DCode6enCodeESt4listISsSaISsEE @1
+    _ZN5DCode6unCodeESs @2
+    _ZN5DCodeC1ENS_9DCodeModeE @3
+    _ZN5DCodeC1Ev @4
+    _ZN5DCodeC2ENS_9DCodeModeE @5
+    _ZN5DCodeC2Ev @6
+    _ZN5DCodeD1Ev @7
+    _ZN5DCodeD2Ev @8
