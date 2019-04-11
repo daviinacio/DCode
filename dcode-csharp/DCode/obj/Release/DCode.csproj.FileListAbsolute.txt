@@ -2,3 +2,9 @@ C:\Users\Davi\Documents\GitHub\DCode\DCodeC#\DCode\bin\Release\DCode.dll
 C:\Users\Davi\Documents\GitHub\DCode\DCodeC#\DCode\bin\Release\DCode.pdb
 C:\Users\Davi\Documents\GitHub\DCode\DCodeC#\DCode\obj\Release\DCode.dll
 C:\Users\Davi\Documents\GitHub\DCode\DCodeC#\DCode\obj\Release\DCode.pdb
+D:\Projetos\Java\DCode\dcode-csharp\DCode\obj\Release\DCode.csprojAssemblyReference.cache
+D:\Projetos\Java\DCode\dcode-csharp\DCode\obj\Release\DCode.csproj.CoreCompileInputs.cache
+D:\Projetos\Java\DCode\dcode-csharp\DCode\obj\Release\DCode.dll
+D:\Projetos\Java\DCode\dcode-csharp\DCode\obj\Release\DCode.pdb
+D:\Projetos\Java\DCode\dcode-csharp\DCode\bin\Release\DCode.dll
+D:\Projetos\Java\DCode\dcode-csharp\DCode\bin\Release\DCode.pdb

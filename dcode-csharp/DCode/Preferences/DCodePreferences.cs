@@ -28,7 +28,8 @@ public class DCodePreferences {
     // Main constructor
     private void This(DCodeFile file) {
         this.file = file;
-        
+
+
         if(file.getStatusKey() == DCodeFile.EMPTY){
             Console.WriteLine("Preference: File empty, base file ceated");
             file.createBaseFile();
