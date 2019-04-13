@@ -2,6 +2,7 @@ package com.daviapps.dcode;
 
 /**
  * @author Davi, 10/11/2016
+ 
  */
 
 public class DCode {
